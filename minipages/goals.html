@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finance Goals</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    /* --------------------------------
+       ORIGINAL PAGE STYLES
+    --------------------------------- */
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      color: #212529;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      text-align: center;
+      padding: 30px 10px;
+    }
+    header h1 {
+      font-size: 32px;
+      font-weight: bold;
+      color: #111;
+      margin-bottom: 5px;
+    }
+    header p {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    .cta-container {
+      text-align: center;
+    }
+    .cta-input {
+      width: 280px;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+    }
+    .cta-button {
+      background-color: #8a7253;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-left: 5px;
+      transition: background 0.3s;
+    }
+    .cta-button:hover {
+      background-color: #705a41;
+    }
+    main {
+      padding: 10px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    /* Dashboard Cards */
+    .dashboard {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    .card {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      width: 240px;
+    }
+    .card h3 {
+      font-size: 16px;
+      color: #6c757d;
+      margin-bottom: 5px;
+    }
+    .card p {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin: 0;
+    }
+    /* Content Row for Form & Chart */
+    .content-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+    /* Goal Form */
+    .goal-form {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.08);
+      flex: 1 1 400px;
+      max-width: 500px;
+    }
+    .goal-form h2 {
+      margin-bottom: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .goal-form input,
+    .goal-form select,
+    .goal-form button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      box-sizing: border-box; /* Important to ensure uniform sizing */
+    }
+    .goal-form button {
+      background: #8a7253;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .goal-form button:hover {
+      background: #705a41;
+    }
+    /* Chart Container */
+    .chart-container {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      flex: 1 1 400px;
+      max-width: 500px;
+      height: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .chart-container h2 {
+      margin-bottom: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+      border-radius: 5px;
+    }
+
+    /* --------------------------------
+       SIDEBAR STYLES
+    --------------------------------- */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 60px; /* Collapsed width */
+      background-color: #f9f9f9;
+      border-right: 1px solid #ddd;
+      overflow: hidden;
+      transition: width 0.3s ease;
+      z-index: 1000;
+    }
+    .sidebar:hover {
+      width: 200px; /* Expanded width */
+    }
+    .sidebar .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      color: #111;
+      font-size: 18px;
+      font-weight: bold;
+      white-space: nowrap;
+      transition: padding 0.3s ease;
+    }
+    .sidebar:hover .logo {
+      justify-content: flex-start;
+      padding-left: 15px;
+    }
+    .sidebar .logo i {
+      margin-right: 10px;
+      margin-left: 8px;
+    }
+    .sidebar .logo span {
+      display: none; /* hide text when collapsed */
+    }
+    .sidebar:hover .logo span {
+      display: inline-block; /* show text when expanded */
+    }
+    .menu {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+    .menu li {
+      margin-bottom: 15px;
+      text-align: center; /* center icons in collapsed state */
+    }
+    .menu li a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #555;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 10px 15px;
+      transition: justify-content 0.3s ease, background-color 0.3s ease;
+    }
+    .sidebar:hover .menu li a {
+      justify-content: flex-start;
+      padding-left: 20px;
+    }
+    .menu li a i {
+      font-size: 18px;
+    }
+    .menu li a span {
+      display: none;
+      margin-left: 10px;
+    }
+    .sidebar:hover .menu li a span {
+      display: inline-block;
+    }
+    .menu li a:hover {
+      background-color: #8C7B6D;
+      color: #fff;
+    }
+    .menu li a.active i {
+      color: #8C7B6D;
+    }
+    .main-content {
+      margin-left: 60px;
+      width: calc(100% - 60px);
+      height: 100%;
+      transition: margin-left 0.3s ease, width 0.3s ease;
+      position: relative;
+      overflow-y: scroll;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .main-content::-webkit-scrollbar {
+      display: none;
+    }
+    .sidebar:hover ~ .main-content {
+      margin-left: 200px;
+      width: calc(100% - 200px);
+    }
+
+        /* Profile container positioned in upper right corner */
+        .profile-container {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      align-items: center;
+      z-index: 10000;
+    }
+  
+    /* Profile picture styling */
+    #profile-picture {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: #ccc; /* default; will be replaced by random color */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: white;
+      margin-left: 10px;
+    }
+
+    #profile-initial {
+  color: #000000;        /* Ensure contrast against the background */
+  font-size: 24px;
+  font-weight: bold;
+}
+    /* -----------------------
+       MESSAGE POPUP + MENU
+    ------------------------ */
+   
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+    .form-group label {
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+      display: block;
+      color: #353A40;
+    }
+    .form-group input[type="text"],
+    .form-group textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    textarea { 
+      resize: vertical; 
+    }
+    .modal-buttons {
+      text-align: right;
+      margin-top: 15px;
+    }
+    .modal-buttons button {
+      background-color: #8F7D6F;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 5px;
+      transition: background-color 0.3s;
+    }
+    .modal-buttons button:hover {
+      background-color: #837568;
+    }
+
+    /* ---------------------------
+       DATA SHARING MINI MENU
+    ---------------------------- */
+    .data-sharing-container {
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      overflow: hidden; /* hides content if we set a fixed height */
+      transition: height 0.5s; /* animate the height change */
+    }
+    /* Title row (always visible) */
+    .data-sharing-title {
+      background: #f9f9f9;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 0.95rem;
+      color: #555;
+    }
+    .data-sharing-title i {
+      margin-left: 8px;
+      color: #aaa;
+    }
+
+    /* The expanded content that appears if data sharing is enabled */
+    .data-sharing-expanded {
+      padding: 10px;
+      text-align: left;
+      opacity: 0;           /* fade it in if we want */
+      transform: translateY(10px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+    .data-sharing-expanded-content {
+      pointer-events: none; /* disabled by default (if locked) */
+    }
+    .data-sharing-expanded .form-group {
+      margin-bottom: 10px;
+    }
+    .data-types label {
+      margin-right: 10px;
+    }
+
+
+    
+
+  </style>
+</head>
+<body>
+  
+
+  <!-- Profile Container in Upper Right -->
+<div class="profile-container">
+  <div id="bell-icon" onclick="handleBellClick()" style="cursor:pointer; font-size:24px; color:#8F7D6F; margin-right:8px;">
+    <i class="fas fa-bell"></i>
+  </div>
+
+  <div id="profile-picture">
+    <span id="profile-initial"></span>
+  </div>
+</div>
+
+ 
+
+
+  
+
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo">
+      <i class="fas fa-bars"></i>
+      <span>Finance Tracker</span>
+    </div>
+    <ul class="menu">
+      <li>
+        <a href="/minipages/Overview.html">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </a>
+      </li>
+      <li>
+        <a href="/minipages/transactions.html">
+          <i class="fas fa-exchange-alt"></i>
+          <span>Transactions</span>
+        </a>
+      </li>
+      <li>
+        <a href="/minipages/charts.html">
+          <i class="fas fa-chart-pie"></i>
+          <span>Charts</span>
+        </a>
+      </li>
+      <li>
+        <a href="/minipages/budget.html">
+          <i class="fas fa-wallet"></i>
+          <span>Budget</span>
+        </a>
+      </li>
+      <li>
+        <a href="#" class="active">
+          <i class="fas fa-bullseye"></i>
+          <span>Goals</span>
+        </a>
+      </li>
+      <!-- AskFinance is now included and set as the active link -->
+      <li>
+        <a href="/minipages/AskFinance.html" >
+          <i class="fas fa-question-circle"></i>
+          <span>AskFinance</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fas fa-cog"></i>
+          <span>Settings</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <header>
+      <h1>Achieve Your Financial Goals</h1>
+      <p>Track expenses, set budgets, and take control with ease.</p>
+      
+    </header>
+
+    <main>
+      <!-- Dashboard Cards Section -->
+      <section class="dashboard" id="summaryCards">
+        <div class="card">
+          <h3>Total Goals</h3>
+          <p id="totalGoals">5</p>
+        </div>
+        <div class="card">
+          <h3>Savings Target</h3>
+          <p id="savingsTarget">$10,000</p>
+        </div>
+        <div class="card">
+          <h3>Montly Savings</h3>
+          <p id="netSavings">$3,200</p>
+        </div>
+        
+      </section>
+
+      <!-- Content Row: Goal Form & Chart Side by Side -->
+      <section class="content-row">
+        <!-- Goal Form Section -->
+        <div class="goal-form">
+          <h2>Add a New Goal</h2>
+          <form id="goalForm">
+            <input type="text" id="goalName" placeholder="Goal Name" required />
+            <input type="number" id="goalAmount" placeholder="Amount ($)" required />
+            <select id="goalType">
+              <option value="Save">Save Money</option>
+              <option value="Reduce">Reduce Expenses</option>
+              <option value="Invest">Invest More</option>
+            </select>
+            <button type="submit">Save Goal</button>
+          </form>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="chart-container">
+          <h2>Goal Distribution</h2>
+          <canvas id="goalChart"></canvas>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" >
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,onAuthStateChanged  } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+  import { getDatabase, ref, get, set, update,onValue   } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+
+  // ✅ Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBu294QDq5U5sipx8LmIRgZTfvSL7GA_sM",
+    authDomain: "personalfinancetrackerdb.firebaseapp.com",
+    databaseURL: "https://personalfinancetrackerdb-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "personalfinancetrackerdb",
+    storageBucket: "personalfinancetrackerdb.appspot.com",
+    messagingSenderId: "404141477300",
+    appId: "1:404141477300:web:90d2185768e64c6169b6e1",
+    measurementId: "G-9H4NRQ68DJ"
+  };
+
+  // ✅ Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+  const user = auth.currentUser;
+  const username = user ? user.displayName : null; // Get the username from the authenticated user
+  
+  async function getUsername(userId) {
+  const snapshot = await get(ref(db, `users/${userId}/username`));
+  return snapshot.exists() ? snapshot.val() : null;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM loaded; setting up onAuthStateChanged listener for goals.");
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const userId = user.uid;
+      // Await the username from your database
+      let username = await getUsername(userId);
+      // If username is not set in the database, fallback to auth.displayName or a default
+      if (!username) {
+        username = user.displayName || "Anonymous";
+      }
+      // Now call setProfilePicture with the resolved username
+      if (localStorage.getItem("profilePictureBase64")) {
+    updateProfilePicture();
+  }
+      else{setProfilePicture(username);
+      }      
+      // Goals listener:
+      const goalsRef = ref(db, `users/${userId}/goals`);
+      onValue(goalsRef, (snapshot) => {
+        if (snapshot.exists()) {
+          console.log("onValue triggered for goals:", snapshot.val());
+
+          fetchGoalsData(userId);
+          updateGoalChart();
+        } else {
+          displayNoDataSummary();
+        }
+      });
+      
+      // Income records listener:
+      const incomeRef = ref(db, `users/${userId}/incomeRecords`);
+      onValue(incomeRef, () => {
+        fetchGoalsData(userId);
+      });
+      
+      // Transactions listener:
+      const transactionsRef = ref(db, `users/${userId}/transactions`);
+      onValue(transactionsRef, () => {
+        fetchGoalsData(userId);
+      });
+      
+    } else {
+      displayDummyData();
+    }
+  });
+});
+
+
+
+
+
+
+// Update the goals summary cards with real data.
+// In this example, we assume that if the user has data, the "savingsTarget" represents the overall goal (target)
+// and "netSavings" is calculated from the real data. Adjust these calculations as needed.
+function updateGoalsSummary(data) {
+  const totalEl = document.getElementById("totalGoals");
+  const savingsTargetEl = document.getElementById("savingsTarget");
+  const netSavingsEl = document.getElementById("netSavings");
+  if (totalEl) totalEl.textContent = data.totalGoals.toLocaleString();
+  if (savingsTargetEl) savingsTargetEl.textContent = `$${data.savingsTarget.toLocaleString()}`;
+  if (netSavingsEl) netSavingsEl.textContent = `$${Number(data.netSavings).toFixed(2)}`;
+}
+
+async function fetchGoalsData(userId) {
+  const goalsRef = ref(db, `users/${userId}/goals`);
+  try {
+    const snapshot = await get(goalsRef);
+    if (snapshot.exists()) {
+      const goalsData = snapshot.val();
+      let total = 0;
+      let targetTotal = 0;
+      // Iterate over the goals.
+      for (const goalId in goalsData) {
+        total++;
+        const goal = goalsData[goalId];
+        targetTotal += Number(goal.amount) || 0;
+      }
+      // Use the updated net savings calculation.
+      const netSavings = await calculateNetSavings(userId);
+      updateGoalsSummary({
+        totalGoals: total,
+        savingsTarget: targetTotal,
+        netSavings: netSavings
+      });
+    } else {
+      displayNoDataSummary();
+      const goalsList = document.getElementById("goalsList");
+      if (goalsList) {
+        goalsList.innerHTML = "<p>No goals found. Start by adding a new goal!</p>";
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching goals data:", error);
+    displayNoDataSummary();
+  }
+}
+
+
+function displayNoDataSummary() {
+  const totalGoalsEl = document.getElementById("totalGoals");
+  const savingsTargetEl = document.getElementById("savingsTarget");
+  const netSavingsEl = document.getElementById("netSavings");
+
+  if (totalGoalsEl) {
+    totalGoalsEl.textContent = "No such data as of yet";
+  }
+  if (savingsTargetEl) {
+    savingsTargetEl.textContent = "No such data as of yet";
+  }
+  if (netSavingsEl) {
+    netSavingsEl.textContent = "No such data as of yet";
+  }
+  const chartContainer = document.querySelector(".chart-container");
+  if (chartContainer) {
+    chartContainer.innerHTML = "<p style='text-align:center;'>No such data as of yet</p>";
+  }
+
+
+}
+
+async function calculateNetSavings(userId) {
+  // 1. Fetch income records.
+  let incomeRecords = [];
+  const incomeSnapshot = await get(ref(db, `users/${userId}/incomeRecords`));
+  if (incomeSnapshot.exists()) {
+    incomeRecords = Object.values(incomeSnapshot.val());
+  }
+
+  // 2. Fetch transactions (expenses).
+  let transactions = [];
+  const txnSnapshot = await get(ref(db, `users/${userId}/transactions`));
+  if (txnSnapshot.exists()) {
+    transactions = Object.values(txnSnapshot.val());
+  }
+
+  // 3. Define the date range: from 30 days ago up to now.
+  const now = Date.now();
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const startDate = now - (30 * msPerDay);
+
+  // 4. Sum up total income in the last 30 days.
+  let totalIncome = 0;
+  incomeRecords.forEach(record => {
+    const recordDate = new Date(record.date).getTime();
+    if (recordDate >= startDate && recordDate <= now) {
+      totalIncome += Number(record.amount) || 0;
+    }
+  });
+
+  // 5. Sum up total expenses in the last 30 days.
+  let totalExpenses = 0;
+  transactions.forEach(txn => {
+    const txnDate = new Date(txn.date).getTime();
+    if (txnDate >= startDate && txnDate <= now) {
+      totalExpenses += Number(txn.amount) || 0;
+    }
+  });
+
+  // 6. Calculate net savings over this 30-day period.
+  const netSavings = totalIncome - totalExpenses;
+  return netSavings;
+}
+
+
+
+
+// Updated function for goal distribution chart with a forceDummy flag
+let budgetChartInstance = null;
+
+async function updateGoalChart(forceDummy = false) {
+  const canvas = document.getElementById("goalChart");
+  if (!canvas) return;
+  const container = canvas.parentElement;
+  
+  let chartData = null;
+  
+  // If forcing dummy data or if no authenticated user, use dummy data.
+  if (forceDummy || !auth.currentUser) {
+    chartData = {
+      labels: ["Rent", "Groceries", "Transport", "Entertainment"],
+      values: [5000, 2500, 1500, 1000],
+      colors: ["#8a7253", "#ffc107", "#28a745", "#dc3545"]
+    };
+  } else {
+    const user = auth.currentUser;
+    const userId = user.uid;
+    try {
+      // IMPORTANT: Make sure this path matches your database.
+      // If your Firebase node for goals is "goals" (lowercase), use that.
+      const goalsRef = ref(db, `users/${userId}/goals`);
+      const snapshot = await get(goalsRef);
+      if (!snapshot.exists()) {
+        container.innerHTML = "<p style='text-align:center;'>No such data as of yet</p>";
+        return;
+      }
+      const goalsData = snapshot.val();
+      let labels = [];
+      let values = [];
+      // Iterate over each goal in the snapshot.
+      Object.keys(goalsData).forEach(key => {
+        const goal = goalsData[key];
+        // Check that a valid type (or category) and target amount exists.
+        // (You can adjust this if you store the goal category differently.)
+        if (goal.name && goal.amount && goal.amount.toString().trim() !== "") {
+          // Use the goal type as the label.
+          labels.push(goal.name);
+          // Use the goal's target amount as the value.
+          values.push(Number(goal.amount) || 0);
+        }
+      });
+      // If no valid data was aggregated, display a message.
+      if (labels.length === 0 || values.length === 0) {
+        container.innerHTML = "<p style='text-align:center;'>No such data as of yet</p>";
+        return;
+      }
+      chartData = {
+        labels: labels,
+        values: values,
+        // Generate random colors for each slice.
+        colors: labels.map(() => "#" + ((1 << 24) * Math.random() | 0).toString(16))
+      };
+    } catch (error) {
+      console.error("Error fetching chart data:", error);
+      container.innerHTML = "<p style='text-align:center;'>No such data as of yet</p>";
+      return;
+    }
+  }
+  
+  // Clear the container before drawing the chart.
+  container.innerHTML = "";
+  // Recreate the canvas element (if needed) so that Chart.js has a clean slate.
+  container.appendChild(canvas);
+  
+  // Destroy old chart instance if it exists.
+  if (budgetChartInstance) {
+    budgetChartInstance.destroy();
+  }
+  
+  // Create new chart instance.
+  const ctx = canvas.getContext("2d");
+  budgetChartInstance = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: chartData.labels,
+      datasets: [{
+        data: chartData.values,
+        backgroundColor: chartData.colors
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+}
+
+
+document.getElementById("goalForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const goalName = document.getElementById("goalName").value;
+  const goalAmount = Number(document.getElementById("goalAmount").value);
+  const goalType = document.getElementById("goalType").value;
+  const goalId = Date.now();
+
+  set(ref(db, `users/${auth.currentUser.uid}/goals/${goalId}`), {
+    name: goalName,
+    amount: goalAmount,
+    type: goalType,
+    completed: false,
+    createdAt: Date.now()
+  })
+  .then(async () => {
+  alert("Goal saved successfully!");
+  e.target.reset();
+  await fetchGoalsData(auth.currentUser.uid);
+  await updateGoalChart();
+})
+
+
+    .catch((error) => {
+      console.error("Error saving goal: ", error);
+      alert("Error saving goal.");
+    });
+});
+
+
+ 
+
+   
+
+
+
+
+ // This function updates the profile picture container using the saved image in localStorage.
+function updateProfilePicture() {
+  const profileContainer = document.getElementById("profile-picture");
+  const base64Pic = localStorage.getItem("profilePictureBase64");
+  
+  if (base64Pic) {
+    profileContainer.style.backgroundImage = `url(${base64Pic})`;
+    profileContainer.style.backgroundSize = "cover";
+    profileContainer.style.backgroundPosition = "center";
+    // Clear any inner HTML (like initials)
+    profileContainer.innerHTML = "";
+  } else {
+    console.log("No profile picture found in localStorage.");
+  }
+}
+  // Expose Firebase app if needed
+  window.app = app;
+/** Wrap everything that references the DOM in DOMContentLoaded **/
+document.addEventListener("DOMContentLoaded", () => {
+  /************************************************
+   * PROFILE PICTURE SETUP
+   ***********************************************/
+   function setProfilePicture(username) {
+  if (!username) return; // If no username is provided, exit the function.
+  
+  // Get the HTML elements that display the profile initial and container.
+  const initialEl = document.getElementById('profile-initial');
+  const pictureEl = document.getElementById('profile-picture');
+  
+  // If either element doesn't exist in the DOM, exit to avoid errors.
+  if (!initialEl || !pictureEl) return;
+
+  // Get the first character of the username, convert it to uppercase.
+  const initial = username.charAt(0).toUpperCase();
+  
+  // Set the text content of the element that shows the initial.
+  initialEl.textContent = initial;
+
+  // Generate a random color for the background.
+  const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+  
+  // Apply the random background color to the profile picture container.
+  pictureEl.style.backgroundColor = randomColor;
+}
+
+  // Example usage
+
+  /************************************************
+   * MESSAGE MODAL FUNCTIONS
+   ***********************************************/
+ 
+  /************************************************
+   * NOTIFICATIONS LOGIC
+   ***********************************************/
+  function getNotifications() {
+    return JSON.parse(localStorage.getItem('notifications')) || [];
+  }
+  function saveNotifications(notifs) {
+    localStorage.setItem('notifications', JSON.stringify(notifs));
+  }
+  function addNotification({ text, icon, type }) {
+    const notifs = getNotifications();
+    notifs.push({
+      id: Date.now().toString(),
+      text,
+      icon,
+      type,
+      read: false
+    });
+    saveNotifications(notifs);
+  }
+  function markNotificationRead(notificationId) {
+    const notifs = getNotifications();
+    const index = notifs.findIndex(n => n.id === notificationId);
+    if (index !== -1) {
+      notifs[index].read = true;
+      saveNotifications(notifs);
+    }
+    openNotificationsMenu();
+  }
+
+  async function checkBudgetsAndGoals() {
+    try {
+      if (!auth.currentUser) {
+        console.warn("No authenticated user");
+        return;
+      }
+      const userId = auth.currentUser.uid;
+      const userRef = ref(db, `users/${userId}`);
+      const snapshot = await get(userRef);
+      if (!snapshot.exists()) {
+        console.log("No data found for user:", userId);
+        return;
+      }
+      const data = snapshot.val();
+      // Check Budget usage
+      if (data.budgets && data.budgets.daily) {
+        const { used, limit } = data.budgets.daily;
+        const usagePercent = (used / limit) * 100;
+        if (usagePercent >= 80 && usagePercent < 100) {
+          addNotification({
+            text: "Careful with spending, you're over 80% of your daily budget!",
+            icon: "💸",
+            type: "budget"
+          });
+        } else if (usagePercent >= 100) {
+          addNotification({
+            text: "You've exceeded your daily budget!",
+            icon: "⚠️",
+            type: "budget"
+          });
+        }
+      }
+      // Check Goals
+      if (data.goals) {
+        Object.keys(data.goals).forEach(goalId => {
+          const goal = data.goals[goalId];
+          if (!goal.completed && goal.savedSoFar >= goal.targetAmount) {
+            update(ref(db, `users/${userId}/goals/${goalId}`), { completed: true });
+            addNotification({
+              text: `Congratulations on achieving your goal: ${goal.name}!`,
+              icon: "🎉",
+              type: "goal"
+            });
+          }
+        });
+      }
+    } catch (error) {
+      console.error("Error checking budgets/goals:", error);
+    }
+  }
+
+  async function handleBellClick() {
+    const welcomeEnabled = (localStorage.getItem('welcomeNotificationsEnabled') === 'true');
+    if (!welcomeEnabled) {
+      alert("Enable welcome notifications from the settings tab!");
+    } else {
+      await checkBudgetsAndGoals();
+      console.log("Bell icon clicked!");
+      openNotificationsMenu();
+    }
+  }
+
+  function openNotificationsMenu() {
+    const notifications = getNotifications();
+    let menuHtml = "";
+    if (notifications.length === 0) {
+      menuHtml = `<div style="padding:10px; text-align:center; color:#888;">No new notifications.</div>`;
+    } else {
+      menuHtml = "<ul style='list-style:none; padding:10px; margin:0;'>";
+      notifications.forEach(notif => {
+        const style = notif.read ? "notif-read" : "notif-unread";
+        menuHtml += `<li class="${style}" style="padding:10px; border-bottom:1px solid #eee; cursor:pointer;"
+            onclick="markNotificationRead('${notif.id}')">
+            ${notif.icon ? notif.icon + " " : ""}${notif.text}
+          </li>`;
+      });
+      menuHtml += "</ul>";
+    }
+    let notifMenu = document.getElementById("notificationsMenu");
+    if (!notifMenu) {
+      notifMenu = document.createElement('div');
+      notifMenu.id = "notificationsMenu";
+      notifMenu.style.position = "absolute";
+      notifMenu.style.top = "60px";
+      notifMenu.style.right = "130px";
+      notifMenu.style.backgroundColor = "#fff";
+      notifMenu.style.border = "1px solid #ccc";
+      notifMenu.style.borderRadius = "6px";
+      notifMenu.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
+      notifMenu.style.padding = "10px";
+      notifMenu.style.zIndex = 10000;
+      document.body.appendChild(notifMenu);
+    }
+    notifMenu.innerHTML = menuHtml;
+    notifMenu.style.display = 'block';
+
+    document.addEventListener('click', function handler(e) {
+      if (!notifMenu.contains(e.target) && e.target.id !== 'bell-icon' && !e.target.closest('#bell-icon')) {
+        notifMenu.style.display = 'none';
+        document.removeEventListener('click', handler);
+      }
+    });
+  }
+
+  // Expose needed functions to the window if your HTML calls them inline:
+  window.handleBellClick = handleBellClick;
+  window.markNotificationRead = markNotificationRead;
+  window.checkBudgetsAndGoals = checkBudgetsAndGoals;
+  window.setProfilePicture = setProfilePicture;
+  window.app = app;
+
+});
+
+  </script>
+    <script src="/features/privacyMode.js"></script>
+
+</body>
+</html>

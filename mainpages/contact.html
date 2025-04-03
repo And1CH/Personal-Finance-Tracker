@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Contact Us | FinanceApp</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #333;
+    }
+
+    /* HEADER / NAV */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fff;
+      padding: 20px 5%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #000;
+    }
+    nav {
+      display: flex;
+      gap: 30px;
+    }
+    nav a {
+      font-size: 1rem;
+      text-decoration: none;
+      color: #000;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #28a745;
+    }
+
+    /* HERO / INTRO */
+    .contact-hero {
+      /* Keep the bounding area. */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 5% 60px;
+      min-height: 50vh;
+    }
+    /* NEW: Let the image scale down rather than fill entire section */
+    #contact-us {
+      max-width: 600px;  /* limit how wide the image can get */
+      width: 100%;       /* responsive width */
+      height: auto;      /* maintain aspect ratio */
+      margin-bottom: 20px;  /* a little spacing under the image */
+      border-radius: 5px;   /* optional: slight corner rounding */
+    }
+
+    .contact-hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      color: #000;
+    }
+    .contact-hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    /* CONTACT FORM SECTION */
+    .contact-section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 5%;
+    }
+    .contact-section h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    .contact-section p {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .contact-form label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      outline: none;
+      resize: none;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: #8c7b6b; /* match your brand color */
+    }
+    .contact-form button {
+      align-self: flex-start;
+      background-color: #8c7b6b;
+      color: #fff;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    .contact-form button:hover {
+      background-color: #7a6a5c;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      background: #fff;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">FinanceApp</div>
+  <nav>
+    <a href="/mainpages/welcome.html">Home</a>
+    <a href="/mainpages/contact.html">Contact</a>
+    <a href="/mainpages/aboutUs.html">About Us</a>
+  </nav>
+</header>
+
+<!-- HERO / INTRO -->
+<section class="contact-hero">
+  <!-- No longer position absolute; just a normal inline image. -->
+  <h1>Contact Us</h1>
+  <p>
+    Have a question, need support, or just want to say hello? We’d love to hear from you.
+    Use the form below or email us directly at <strong>support@financeapp.com</strong>.
+  </p>
+</section>
+
+<!-- CONTACT FORM SECTION -->
+<section class="contact-section">
+  <h2>Get in Touch</h2>
+  <p>Please fill out the form below, and we’ll get back to you as soon as possible.</p>
+  <form class="contact-form">
+    <div>
+      <label for="name">Your Name</label>
+      <input id="name" type="text" required placeholder="Full Name">
+    </div>
+    <div>
+      <label for="email">Email Address</label>
+      <input id="email" type="email" required placeholder="you@example.com">
+    </div>
+    <div>
+      <label for="message">Message</label>
+      <textarea id="message" rows="5" required placeholder="What's on your mind?"></textarea>
+    </div>
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2025 FinanceApp. All Rights Reserved.</p>
+</footer>
+
+<script>
+
+document.querySelector('.contact-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const message = document.getElementById('message').value;
+  
+  try {
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, message })
+    });
+    if (response.ok) {
+      alert('Your message has been sent successfully!');
+    } else {
+      alert('There was an error sending your message.');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('There was an error sending your message.');
+  }
+});
+
+
+const express = require('express');
+const nodemailer = require('nodemailer');
+const app = express();
+app.use(express.json());
+
+// Конфигурация на Nodemailer с Outlook SMTP
+const transporter = nodemailer.createTransport({
+  host: 'smtp.office365.com', // Примерен SMTP адрес за Outlook
+  port: 587,
+  secure: false, // За TLS
+  auth: {
+    user: 'ClientServicesFinanceTracker@outlook.com',
+    pass: 'Andro2006'
+  }
+});
+
+app.post('/api/contact', async (req, res) => {
+  const { name, email, message } = req.body;
+  const mailOptions = {
+    from: 'financetracker25@outlook.com',
+    to: 'ClientServicesFinanceTracker@outlook.com',
+    subject: `Contact Form Message from ${name}`,
+    text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ message: 'Email sent successfully' });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).json({ error: 'Error sending email' });
+  }
+});
+
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
+
+</script>
+
+</body>
+</html>

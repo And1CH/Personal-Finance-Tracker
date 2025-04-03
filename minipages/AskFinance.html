@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AskFinance</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Global Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Prevent overall page scrolling */
+    html, body {
+      height: 100vh;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #111;
+      display: flex;
+    }
+
+    /* Sidebar Styling */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 60px; /* Collapsed width */
+      background-color: #f9f9f9;
+      border-right: 1px solid #ddd;
+      overflow: hidden;
+      transition: width 0.3s ease;
+      z-index: 1000;
+    }
+
+    .sidebar:hover {
+      width: 200px; /* Expanded width */
+    }
+
+    .sidebar .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      color: #111;
+      font-size: 18px;
+      font-weight: bold;
+      white-space: nowrap;
+      transition: padding 0.3s ease;
+    }
+
+    .sidebar:hover .logo {
+      justify-content: flex-start;
+      padding-left: 10px;
+    }
+
+    .sidebar .logo i {
+      margin-right: 0px;
+
+    }
+    .sidebar:hover .logo i {
+      margin-right: 5px;
+    }
+
+    .sidebar .logo span {
+      display: none;
+    }
+
+    .sidebar:hover .logo span {
+      display: inline-block;
+    }
+
+    .sidebar .menu {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    .sidebar .menu li {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .sidebar .menu li a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #555;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 10px 15px;
+      transition: justify-content 0.3s ease, background-color 0.3s ease;
+    }
+
+    .sidebar:hover .menu li a {
+      justify-content: flex-start;
+      padding-left: 20px;
+    }
+
+    /* Hover color (#8C7B6D) */
+    .sidebar .menu li a:hover {
+      background-color: #8C7B6D;
+      color: #fff;
+    }
+
+    /* Active icon styling */
+    .sidebar .menu li a.active i {
+      color: #8C7B6D;
+    }
+
+    .sidebar .menu li a i {
+      font-size: 18px;
+    }
+
+    .sidebar .menu li a span {
+      display: none;
+      margin-left: 10px;
+    }
+
+    .sidebar:hover .menu li a span {
+      display: inline-block;
+    }
+
+    /* Main Content Styling */
+    .main-content {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 60px; 
+      right: 0;  
+      height: 100vh;
+      transition: margin-left 0.3s ease, width 0.3s ease;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  
+
+    
+    .sidebar:hover ~ .main-content {
+      margin-left: 140px;
+      width: calc(100% - 200px);
+    }
+
+    /* Page Heading Positioned at the Top Center */
+    h1 {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      margin: 0;
+    }
+
+    /* Chat Container: Fixed size (400x700) centered in main-content */
+    .chat-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+    right: 0;
+
+  border-left: 1px solid #ddd; /* keeps the border adjacent to the sidebar */
+}
+
+
+    /* The iframe fills the chat container entirely */
+    .chat-container iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Canvas Chart Styling remains unchanged */
+    canvas {
+      margin-top: 20px;
+      max-width: 600px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Input/Button styling remains unchanged */
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: #fff;
+      cursor: pointer;
+      border: none;
+    }
+
+    button:hover {
+      background-color: #8C7B6D;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      <i class="fas fa-bars"></i> <span>Finance Tracker</span>
+    </div>
+    <ul class="menu">
+      <li><a href="/minipages/Overview.html"><i class="fas fa-home"></i><span>Overview</span></a></li>
+      <li><a href="/minipages/transactions.html"><i class="fas fa-exchange-alt"></i><span>Transactions</span></a></li>
+      <li><a href="/minipages/charts.html"><i class="fas fa-chart-pie"></i><span>Charts</span></a></li>
+      <li><a href="/minipages/budget.html"><i class="fas fa-wallet"></i><span>Budget</span></a></li>
+      <li><a href="/minipages/goals.html"><i class="fas fa-bullseye"></i><span>Goals</span></a></li>
+      <!-- Active page -->
+      <li><a class="active" href="/minipages/AskFinance.html"><i class="fas fa-question-circle"></i><span>AskFinance</span></a></li>
+      <li><a href="/minipages/settings.html"><i class="fas fa-cog"></i><span>Settings</span></a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <h1>AskFinance</h1>
+    <div class="chat-container">
+      <iframe src="https://www.chatbase.co/chatbot-iframe/ck1ZHnedV6WGZT4DK206M"></iframe>
+    </div>
+    <canvas id="financeChart"></canvas>
+  </div>
+
+  
+
+  <!-- Profile Container in Upper Right -->
+<div class="profile-container">
+  <div id="bell-icon" onclick="handleBellClick()" style="cursor:pointer; font-size:24px; color:#8F7D6F; margin-right:8px;">
+    <i class="fas fa-bell"></i>
+  </div>
+  <div id="message-icon" onclick="handleMessageClick()">
+    <i class="fas fa-comment-alt"></i>
+  </div>
+  <div id="profile-picture">
+    <span id="profile-initial"></span>
+  </div>
+</div>
+
+  <!-- The Modal Overlay for sending messages -->
+  <div id="messageModal">
+    <div class="message-container" id="messageContainer">
+      <h2>Send Message</h2>
+      <form id="messageForm">
+        <!-- Basic Fields -->
+        <div class="form-group">
+          <label for="toField">To:</label>
+          <input type="text" id="toField" placeholder="Enter recipient name">
+        </div>
+        <div class="form-group">
+          <label for="titleField">Title:</label>
+          <input type="text" id="titleField" placeholder="Message title">
+        </div>
+        <div class="form-group">
+          <label for="contentField">Content:</label>
+          <textarea id="contentField" placeholder="Type your message here" rows="4"></textarea>
+        </div>
+
+        <!-- Data Sharing Mini Menu -->
+        <div class="data-sharing-container" id="dataSharingContainer">
+          <div class="data-sharing-title">
+            Data Sharing
+            <i class="fas fa-lock" id="lockIcon"></i>
+          </div>
+          <div class="data-sharing-expanded" id="dataSharingExpanded">
+            <div class="data-sharing-expanded-content">
+              <div class="form-group">
+                <label style="font-weight: bold;">Type of Data</label>
+                <div class="data-types">
+                  <label><input type="checkbox" name="dataType" value="transactions"> Transactions</label>
+                  <label><input type="checkbox" name="dataType" value="budgets"> Budgets</label>
+                  <label><input type="checkbox" name="dataType" value="goals"> Goals</label>
+                  <label><input type="checkbox" name="dataType" value="charts"> Charts</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label style="font-weight: bold;">Date Range</label>
+                <div style="display: flex; gap: 10px;">
+                  <div>
+                    <label for="dataFrom">From:</label>
+                    <input type="date" id="dataFrom">
+                  </div>
+                  <div>
+                    <label for="dataTo">To:</label>
+                    <input type="date" id="dataTo">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End of Data Sharing Mini Menu -->
+
+        <div class="modal-buttons">
+          <button type="submit">Send</button>
+          <button type="button" onclick="closeMessageModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+  
+
+
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getDatabase } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+    // Firebase configuration remains unchanged
+    const firebaseConfig = {
+      apiKey: "AIzaSyBu294QDq5U5sipx8LmIRgZTfvSL7GA_sM",
+      authDomain: "personalfinancetrackerdb.firebaseapp.com",
+      databaseURL: "https://personalfinancetrackerdb-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "personalfinancetrackerdb",
+      storageBucket: "personalfinancetrackerdb.appspot.com",
+      messagingSenderId: "404141477300",
+      appId: "1:404141477300:web:90d2185768e64c6169b6e1",
+      measurementId: "G-9H4NRQ68DJ"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    console.log("AskFinance page now has Firebase DB access!");
+  </script>
+</body>
+</html>

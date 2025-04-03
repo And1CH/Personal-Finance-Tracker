@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Transactions</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+  <style>
+    /* ---------------------------------
+       GLOBAL RESET & BASE STYLING
+    --------------------------------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100vh;
+      overflow: hidden; /* Avoid scrolling the entire page */
+      font-family: "Arial", sans-serif;
+      background-color: #F6F5F3; /* Soft off-white */
+      color: #3A3A3A; /* Warm deep gray */
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---------------------------------
+       SIDEBAR
+    --------------------------------- */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 50px; /* Collapsed width */
+      background-color: #E6E3DF; /* Light stone gray */
+      border-right: 1px solid #CFCBC6;
+      transition: width 0.3s ease;
+      z-index: 1000;
+      overflow: hidden;
+    }
+    .sidebar:hover {
+      width: 200px; /* Expanded width */
+    }
+    .sidebar .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      color: #3A3A3A;
+      font-size: 18px;
+      font-weight: bold;
+      white-space: nowrap;
+      transition: padding 0.3s ease;
+    }
+    .sidebar:hover .logo {
+      justify-content: flex-start;
+      padding-left: 15px;
+    }
+    .sidebar .logo i {
+      margin-right: 10px;
+      margin-left: 6px;
+    }
+    .sidebar .logo span {
+      display: none;
+    }
+    .sidebar:hover .logo span {
+      display: inline-block;
+    }
+
+    /* Sidebar Menu */
+    .menu {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+    .menu li {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    .menu li a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #615F5B;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 10px 15px;
+      transition: background-color 0.3s ease, justify-content 0.3s ease;
+    }
+    .sidebar:hover .menu li a {
+      justify-content: flex-start;
+      padding-left: 20px;
+    }
+    .menu li a i {
+      font-size: 18px;
+      margin-left: -4px;
+    }
+    .menu li a span {
+      display: none;
+      margin-left: 10px;
+    }
+    .sidebar:hover .menu li a span {
+      display: inline-block;
+    }
+    .menu li a:hover {
+      background-color: #9A8676; /* Soft walnut */
+      color: #fff;
+    }
+    .menu li a.active i {
+      color: #9A8676;
+    }
+
+    /* ---------------------------------
+       MAIN CONTENT
+    --------------------------------- */
+    .main-content {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50px; /* Collapsed sidebar offset */
+      right: 0;
+      overflow: auto; /* Let main content scroll if needed */
+      transition: left 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      
+    }
+    .sidebar:hover ~ .main-content {
+      left: 200px; /* Expanded sidebar offset */
+    }
+
+    /* ---------------------------------
+       HEADER (Title, Stats, etc.)
+    --------------------------------- */
+    .transactions-header {
+      background: linear-gradient(90deg, #E6E3DF 0%, #D9D4CF 100%);
+      border-bottom: 1px solid #CFCBC6;
+      padding: 15px 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .transactions-header h1 {
+      font-size: 1.5rem;
+      color: #3A3A3A;
+      margin: 0;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .header-right .stats {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .header-right .stats span {
+      font-size: 0.9rem;
+      color: #615F5B;
+    }
+    .header-right .stats .total-amount {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #3A3A3A;
+    }
+
+    /* ---------------------------------
+       CONTENT AREA
+    --------------------------------- */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 20px;
+      overflow: auto;
+    }
+
+    /* ---------------------------------
+       HORIZONTAL FILTER BAR
+    --------------------------------- */
+    .filter-bar {
+      display: flex;
+      align-items: flex-end; /* bottom-align the fields */
+      flex-wrap: wrap;
+      gap: 15px;
+      background-color: #F6F5F3;
+      border: 1px solid #CFCBC6;
+      border-radius: 6px;
+      padding: 15px;
+      position: relative;
+    }
+    .filter-title {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 1rem;
+      margin-right: 10px;
+      position: relative;
+      top: -15px;
+    }
+    .filter-title i {
+      margin-right: 5px;
+      font-size: 1.2rem;
+    }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 120px;
+    }
+    .filter-group label {
+      font-size: 0.85rem;
+      margin-bottom: 5px;
+      color: #3A3A3A;
+    }
+    .filter-group input,
+    .filter-group select {
+      border: 1px solid #CFCBC6;
+      border-radius: 4px;
+      padding: 6px;
+      font-size: 0.85rem;
+      background-color: #fff;
+      color: #3A3A3A;
+    }
+    .filter-bar button {
+      background-color: #9A8676;
+      border: none;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      transition: background-color 0.3s;
+    }
+    .filter-bar button:hover {
+      background-color: #8C7A65;
+    }
+
+    /* ---------------------------------
+       FORMS CONTAINER
+    --------------------------------- */
+    .forms-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .transaction-form,
+    .scheduled-transaction-form {
+      background-color: #F6F5F3;
+      border: 1px solid #CFCBC6;
+      border-radius: 6px;
+      padding: 15px;
+      flex: 1;
+      min-width: 280px;
+      margin-bottom: 20px;
+    }
+    .transaction-form h2,
+    .scheduled-transaction-form h2 {
+      margin-bottom: 10px;
+      color: #3A3A3A;
+      font-size: 1.1rem;
+    }
+    .transaction-form label,
+    .scheduled-transaction-form label {
+      display: block;
+      margin: 10px 0 5px;
+      font-size: 0.9rem;
+      color: #3A3A3A;
+    }
+    .transaction-form input,
+    .transaction-form select,
+    .scheduled-transaction-form input,
+    .scheduled-transaction-form select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #CFCBC6;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      background-color: #fff;
+      color: #3A3A3A;
+    }
+    .transaction-form button,
+    .scheduled-transaction-form button {
+      background-color: #9A8676;
+      border: none;
+      color: #fff;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+    }
+    .transaction-form button:hover,
+    .scheduled-transaction-form button:hover {
+      background-color: #8C7A65;
+    }
+
+
+        /* Profile container positioned in upper right corner */
+        .profile-container {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      align-items: center;
+      z-index: 10000;
+    }
+   
+    /* Profile picture styling */
+    #profile-picture {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: #ccc; /* default; will be replaced by random color */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: white;
+      margin-left: 10px;
+      top: -5px;
+      right: 10px;
+    }
+    #profile-initial {
+  color: #000000;        /* Ensure contrast against the background */
+  font-size: 24px;
+  font-weight: bold;
+}
+
+    /* -----------------------
+       MESSAGE POPUP + MENU
+    ------------------------ */
+    
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+    .form-group label {
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+      display: block;
+      color: #353A40;
+    }
+    .form-group input[type="text"],
+    .form-group textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    textarea { 
+      resize: vertical; 
+    }
+    .modal-buttons {
+      text-align: right;
+      margin-top: 15px;
+    }
+    .modal-buttons button {
+      background-color: #8F7D6F;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 5px;
+      transition: background-color 0.3s;
+    }
+    .modal-buttons button:hover {
+      background-color: #837568;
+    }
+
+    /* ---------------------------
+       DATA SHARING MINI MENU
+    ---------------------------- */
+   
+    .reminders-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #F6F5F3;
+  border: 1px solid #CFCBC6;
+  border-radius: 6px 6px 0 0; /* Only round the top corners */
+  padding: 15px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
+
+    #reminderBar {
+      display: flex;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 15px;
+      background-color: #F6F5F3;
+      border: 1px solid #CFCBC6;
+      border-radius: 6px;
+      padding: 15px;
+      position: absolute;
+      margin-top: 20px;
+      bottom: 50px; /* Just an example if you want some spacing from the bottom */
+      left: 20px;
+      right: 0;
+      z-index: 999;    
+      max-width: 440px;
+
+
+}
+/* Reminder Bar Styles */
+
+
+.reminder-bar .reminder-icon {
+  font-size: 1.5rem;
+  color: #9A8676;
+}
+
+.reminder-bar input {
+  flex: 1;
+  padding: 8px;
+  font-size: 0.9rem;
+  border: 1px solid #CFCBC6;
+  border-radius: 4px;
+}
+
+.reminder-bar button {
+  background-color: #9A8676;
+  border: none;
+  color: #fff;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.reminder-bar button:hover {
+  background-color: #8C7A65;
+}
+
+
+
+.reminders-container h2 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #3A3A3A;
+}
+
+.reminders-container ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.reminders-container ul li {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.9rem;
+  color: #3A3A3A;
+}
+
+.reminders-container ul li:last-child {
+  border-bottom: none;
+}
+
+
+/****************************************************
+ * INCOME CONTAINER (similar to .reminders-container)
+ ****************************************************/
+ .income-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #F6F5F3;
+  border: 1px solid #CFCBC6;
+  border-radius: 6px 6px 0 0; /* Only round the top corners */
+  padding: 15px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 999; 
+}
+
+/****************************************************
+ * INCOME BAR (similar to #reminderBar / .reminder-bar)
+ ****************************************************/
+.income-bar {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 15px;
+  background-color: #F6F5F3;
+  border: 1px solid #CFCBC6;
+  border-radius: 6px;
+  padding: 15px;
+  position: absolute;
+  margin-top: 20px;
+  bottom: 40px; /* Adjust if you want spacing from the bottom */
+  left: 500px;
+  right: 0;
+  z-index: 999;
+  max-width: 900px;
+  max-height: 100px;
+}
+
+/* Title / Icon for Income Bar */
+.income-bar .filter-title {
+  font-size: 1.1rem;
+  color: #9A8676;
+  display: flex;
+  align-items: center;
+  gap: 6px;  /* space between icon & text */
+}
+
+.income-bar .filter-title i {
+  font-size: 1.5rem;
+}
+
+/****************************************************
+ * INCOME INPUT + LABEL
+ ****************************************************/
+.income-bar .filter-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* so input can expand */
+  gap: 4px;
+}
+
+.income-bar .filter-group label {
+  font-size: 0.9rem;
+  color: #3A3A3A;
+}
+
+.income-bar .filter-group input[type="text"] {
+  padding: 8px;
+  font-size: 0.9rem;
+  border: 1px solid #CFCBC6;
+  border-radius: 4px;
+}
+
+/****************************************************
+ * INCOME BUTTON
+ ****************************************************/
+.income-bar button#addIncomeBtn {
+  background-color: #9A8676;
+  border: none;
+  color: #fff;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 6px;  /* space between icon & text */
+}
+
+.income-bar button#addIncomeBtn:hover {
+  background-color: #8C7A65;
+}
+
+  </style>
+</head>
+<body>
+
+  
+  <!-- DISPLAY REMINDERS -->
+
+  
+
+  <!-- Profile Container in Upper Right -->
+<div class="profile-container">
+  <div id="bell-icon" onclick="handleBellClick()" style="cursor:pointer; font-size:24px; color:#8F7D6F; margin-right:8px; position: absolute; top: 15px; right: 105px;">
+    <i class="fas fa-bell"></i>
+  </div>
+ 
+  <div id="profile-picture">
+    <span id="profile-initial"></span>
+  </div>
+</div>
+
+  <!-- The Modal Overlay for sending messages -->
+ 
+
+
+  
+
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo">
+      <i class="fas fa-bars"></i> <span>Finance Tracker</span>
+    </div>
+    <ul class="menu">
+      <li><a href="/minipages/Overview.html"><i class="fas fa-home"></i><span> Overview</span></a></li>
+      <li><a class="active" href="/minipages/transactions.html"><i class="fas fa-exchange-alt"></i><span> Transactions</span></a></li>
+      <li><a href="/minipages/charts.html"><i class="fas fa-chart-pie"></i><span> Charts</span></a></li>
+      <li><a href="/minipages/budget.html"><i class="fas fa-wallet"></i><span> Budget</span></a></li>
+      <li><a href="/minipages/goals.html"><i class="fas fa-bullseye"></i><span> Goals</span></a></li>
+      <li><a href="/minipages/AskFinance.html"><i class="fas fa-question-circle"></i><span> AskFinance</span></a></li>
+      <li><a href="/minipages/settings.html"><i class="fas fa-cog"></i><span> Settings</span></a></li>
+    </ul>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <!-- HEADER -->
+    <div class="transactions-header">
+      <div class="header-right">
+        <div class="stats">
+          <span><i class="fas fa-receipt"></i> Transactions: <strong id="transactionCount">0</strong></span>
+          <span class="total-amount"><i class="fas fa-dollar-sign"></i> Total: $<strong id="transactionTotal">0.00</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT AREA -->
+    <div class="content-area">
+      <!-- HORIZONTAL FILTER BAR -->
+      <div class="filter-bar">
+        <!-- "Filter" text with icon -->
+        <div class="filter-title">
+          <i class="fas fa-filter"></i> Filter
+        </div>
+
+        <!-- Category -->
+        <div class="filter-group">
+          <label for="filterCategory"><i class="fas fa-list"></i> Category</label>
+          <select id="filterCategory">
+            <option value="">All</option>
+            <option value="Food">Food</option>
+            <option value="Transportation">Transportation</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <!-- From Date -->
+        <div class="filter-group">
+          <label for="filterFrom"><i class="fas fa-calendar"></i> From (Date)</label>
+          <input type="date" id="filterFrom" />
+        </div>
+
+        <!-- To Date -->
+        <div class="filter-group">
+          <label for="filterTo"><i class="fas fa-calendar"></i> To (Date)</label>
+          <input type="date" id="filterTo" />
+        </div>
+
+        <!-- Filter Buttons (Apply / Clear) -->
+        <button id="applyFilterBtn"><i class="fas fa-search"></i> Apply Filter</button>
+        <button id="clearFilterBtn"><i class="fas fa-undo"></i> Clear Filter</button>
+      </div>
+
+      <!-- FORMS CONTAINER -->
+      <div class="forms-container">
+        <!-- ADD TRANSACTION FORM -->
+        <div class="transaction-form">
+          <h2><i class="fas fa-plus-circle"></i> Add Transaction</h2>
+          <form id="transactionForm">
+            <label for="category"><i class="fas fa-list"></i> Category:</label>
+            <select id="category">
+              <option value="Food">Food</option>
+              <option value="Transportation">Transportation</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <label for="amount"><i class="fas fa-dollar-sign"></i> Amount ($):</label>
+            <input type="number" id="amount" required />
+
+            <label for="description"><i class="fas fa-align-left"></i> Description:</label>
+            <input type="text" id="description" required />
+
+            <label for="date"><i class="fas fa-calendar-alt"></i> Date:</label>
+            <input type="date" id="date" required />
+
+            <button type="submit"><i class="fas fa-check"></i> Add Transaction</button>
+          </form>
+        </div>
+
+        <!-- SCHEDULED TRANSACTION FORM -->
+        <div class="scheduled-transaction-form">
+          <h2><i class="fas fa-clock"></i> Schedule a Transaction</h2>
+          <form id="scheduledTransactionForm">
+            <label for="scheduledDate"><i class="fas fa-calendar"></i> Date:</label>
+            <input type="date" id="scheduledDate" required />
+
+            <label for="scheduledCategory"><i class="fas fa-list"></i> Category:</label>
+            <select id="scheduledCategory">
+              <option value="Food">Food</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Transportation">Transportation</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <label for="scheduledAmount"><i class="fas fa-dollar-sign"></i> Amount:</label>
+            <input type="number" id="scheduledAmount" required />
+
+            <label for="scheduledDescription"><i class="fas fa-align-left"></i> Description:</label>
+            <input type="text" id="scheduledDescription" required />
+
+            <button type="submit"><i class="fas fa-save"></i> Schedule Transaction</button>
+          </form>
+        </div>
+
+        <div class="filter-bar" id="reminderBar">
+          <div class="filter-title">
+            <i class="fas fa-clipboard-list"></i> Reminders
+          </div>
+          <div class="filter-group">
+            <label for="reminderInput">Add a reminder</label>
+            <input type="text" id="reminderInput" placeholder="Type a reminder..." />
+          </div>
+          <button id="addReminderBtn"><i class="fas fa-plus-circle"></i> Add</button>
+        </div>
+      
+        <div class="income-bar" id="incomeBar">
+          <div class="filter-title">
+            <i class="fas fa-dollar-sign"></i> Income
+          </div>
+          <div class="filter-group">
+            <label for="incomeInput">Add income</label>
+            <input type="text" id="incomeInput" placeholder="Enter an income..." />
+          </div>
+          <button id="addIncomeBtn"><i class="fas fa-plus-circle"></i> Add</button>
+        </div>
+      
+      </div>
+      </div><!-- /forms-container -->
+    </div><!-- /content-area -->
+  </div><!-- /main-content -->
+
+  <!-- SCRIPTS: Keep your existing Firebase logic, event listeners, etc. -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+    import { getDatabase, ref, push,get,set,update } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBu294QDq5U5sipx8LmIRgZTfvSL7GA_sM",
+      authDomain: "personalfinancetrackerdb.firebaseapp.com",
+      databaseURL: "https://personalfinancetrackerdb-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "personalfinancetrackerdb",
+      storageBucket: "personalfinancetrackerdb.appspot.com",
+      messagingSenderId: "404141477300",
+      appId: "1:404141477300:web:90d2185768e64c6169b6e1",
+      measurementId: "G-9H4NRQ68DJ"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+  // References to the elements in your HTML
+  const transactionCountEl = document.getElementById("transactionCount");
+  const transactionTotalEl = document.getElementById("transactionTotal");
+
+  // 1) Function to fetch and process transactions
+  async function fetchAndProcessTransactions(userId) {
+    // Path: users/{userId}/Transactions
+    const transactionsRef = ref(db, `users/${userId}/Transactions`);
+    try {
+      const snapshot = await get(transactionsRef);
+      if (snapshot.exists()) {
+        const transactionsData = snapshot.val();
+        let count = 0;
+        let total = 0;
+
+        // Loop over each transaction child
+        for (const txId in transactionsData) {
+          count++;
+          const tx = transactionsData[txId];
+          // If the transaction has an "amount" property
+          const amount = parseFloat(tx.amount) || 0;
+          total += amount;
+        }
+
+        updateTransactionUI(count, total);
+      } else {
+        // If no data, show 0
+        updateTransactionUI(0, 0);
+      }
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+      updateTransactionUI(0, 0);
+    }
+  }
+
+  // 2) Function to update the DOM
+  function updateTransactionUI(count, total) {
+    if (transactionCountEl) {
+      transactionCountEl.textContent = count;
+    }
+    if (transactionTotalEl) {
+      // Format to 2 decimal places
+      transactionTotalEl.textContent = total.toFixed(2);
+    }
+  }
+
+  // 3) Listen for auth state changes
+ // Helper function to fetch the username from your database
+async function getUsername(userId) {
+  try {
+    const snapshot = await get(ref(db, `users/${userId}/username`));
+    return snapshot.exists() ? snapshot.val() : null;
+  } catch (error) {
+    console.error("Error fetching username:", error);
+    return null;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Listen for authentication state changes
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+
+      const userRef = ref(db, 'users/' + user.uid);
+      const snapshot = await get(userRef);
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        if (userData.profileIcon) {
+          localStorage.setItem('profilePictureBase64', userData.profileIcon);
+        }
+      }
+
+      const userId = user.uid;
+      // Retrieve username from database; if missing, use displayName or a default.
+      let username = await getUsername(userId);
+      if (!username) {
+        username = user.displayName || "Anonymous";
+      }
+      console.log("Username determined:", username);
+      
+      if (localStorage.getItem("profilePictureBase64")) {
+    updateProfilePicture();
+  }
+      else{setProfilePicture(username);
+      }
+      
+      // Now update the transactions UI (which uses your fetchAndProcessTransactions function)
+      fetchAndProcessTransactions(userId);
+      console.log("Auth state changed: user is logged in.");
+    } else {
+      // If no user is logged in, update the UI with dummy data
+      updateTransactionUI(0, 0);
+      console.log("Auth state changed: no user logged in.");
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+  // 1) Check if user is authenticated
+  const user = auth.currentUser;
+  if (!user) {
+    console.warn("No authenticated user - skipping reminders logic.");
+    return;
+  }
+  const userId = user.uid;
+
+  // 2) Grab references to our DOM elements
+  document.addEventListener("DOMContentLoaded", async () => {
+  // 1. Check if user is authenticated
+  const user = auth.currentUser;
+  if (!user) {
+    console.warn("No authenticated user - skipping reminders logic.");
+    return;
+  }
+  const userId = user.uid;
+
+  // 2. Grab references to DOM elements for reminders
+  const addReminderBtn = document.getElementById("addReminderBtn");
+  const reminderInput = document.getElementById("reminderInput");
+  const remindersList = document.getElementById("remindersList");
+
+  // 3. Function to load and display reminders from Firebase
+  async function loadReminders() {
+    try {
+      // Clear the current list
+      remindersList.innerHTML = "";
+      const snap = await get(ref(db, `users/${userId}/reminders`));
+      if (snap.exists()) {
+        const data = snap.val();
+        const reminderKeys = Object.keys(data);
+        // Optional: sort reminders by createdAt (newest first)
+        reminderKeys.sort((a, b) => data[b].createdAt - data[a].createdAt);
+        reminderKeys.forEach(key => {
+          const reminder = data[key];
+          const li = document.createElement("li");
+          li.textContent = reminder.text || "No text";
+          remindersList.appendChild(li);
+        });
+      } else {
+        remindersList.innerHTML = "<li>No reminders yet.</li>";
+      }
+    } catch (error) {
+      console.error("Error loading reminders:", error);
+      remindersList.innerHTML = "<li>Failed to load reminders.</li>";
+    }
+  }
+
+  // 4. Event listener to add a new reminder
+  addReminderBtn.addEventListener("click", async () => {
+    const text = reminderInput.value.trim();
+    if (!text) {
+      alert("Please enter a reminder.");
+      return;
+    }
+    try {
+      // Create a new reminder using push for a unique key
+      const newReminderRef = push(ref(db, `users/${userId}/reminders`));
+      await set(newReminderRef, {
+        text: text,
+        createdAt: Date.now()
+      });
+      // Clear the input field and reload reminders
+      reminderInput.value = "";
+      loadReminders();
+    } catch (error) {
+      console.error("Error adding reminder:", error);
+      alert("Could not add reminder. See console for details.");
+    }
+  });
+
+  // 5. Initial load of reminders
+  loadReminders();
+});
+
+
+  // 4) Add event listener for "Add" button
+  addReminderBtn.addEventListener("click", async () => {
+    const text = reminderInput.value.trim();
+    if (!text) {
+      alert("Please enter a reminder.");
+      return;
+    }
+    try {
+      // Create a unique key for each reminder
+      const newRef = push(ref(db, `users/${userId}/reminders`));
+      await set(newRef, {
+        text: text,
+        createdAt: Date.now()
+      });
+      // Clear the input
+      reminderInput.value = "";
+      // Reload the reminders list so the new one appears
+      loadReminders();
+    } catch (error) {
+      console.error("Error adding reminder:", error);
+      alert("Could not add reminder. See console for details.");
+    }
+  });
+
+  // 5) Initial load of reminders
+  loadReminders();
+});
+
+
+
+    // Example write function
+    function writeTransactionData(category, amount, date, description) {
+      const user = auth.currentUser;
+      if (!user) {
+        alert("User not authenticated. Please log in.");
+        return;
+      }
+      const userID = user.uid;
+      const transactionsRef = ref(database, `users/${userID}/transactions`);
+      push(transactionsRef, { category, amount, date, description })
+        .then(() => {
+          console.log("Transaction saved ✅");
+          alert("Transaction added successfully!");
+        })
+        .catch((error) => {
+          console.error("Error saving transaction ❌", error);
+          alert("Error adding transaction.");
+        });
+    }
+
+    // On DOM load
+    document.addEventListener("DOMContentLoaded", () => {
+      const transactionForm = document.getElementById("transactionForm");
+      const scheduledTransactionForm = document.getElementById("scheduledTransactionForm");
+
+      // Add Transaction
+      transactionForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const category = document.getElementById("category").value;
+        const amount = document.getElementById("amount").value;
+        const description = document.getElementById("description").value;
+        const date = document.getElementById("date").value;
+
+        if (!date || !category || !amount || !description) {
+          alert("Please fill in all fields.");
+          return;
+        }
+        writeTransactionData(category, amount, date, description);
+        transactionForm.reset();
+      });
+
+      // Schedule Transaction (LocalStorage-based)
+      scheduledTransactionForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const scheduledDate = document.getElementById("scheduledDate").value;
+        const scheduledCategory = document.getElementById("scheduledCategory").value;
+        const scheduledAmount = document.getElementById("scheduledAmount").value;
+        const scheduledDescription = document.getElementById("scheduledDescription").value;
+
+        if (!scheduledDate || !scheduledCategory || !scheduledAmount || !scheduledDescription) {
+          alert("Please fill in all fields.");
+          return;
+        }
+        let scheduledTransactions = JSON.parse(localStorage.getItem("scheduledTransactions")) || [];
+        scheduledTransactions.push({
+          date: scheduledDate,
+          category: scheduledCategory,
+          amount: scheduledAmount,
+          description: scheduledDescription
+        });
+        localStorage.setItem("scheduledTransactions", JSON.stringify(scheduledTransactions));
+        alert("Scheduled transaction saved!");
+        scheduledTransactionForm.reset();
+      });
+
+      // Check scheduled transactions on load
+      checkScheduledTransactions();
+    });
+
+
+     document.addEventListener("DOMContentLoaded", () => {
+  const addIncomeBtn = document.getElementById("addIncomeBtn");
+
+  addIncomeBtn.addEventListener("click", async (e) => {
+    e.preventDefault(); // Prevent any default button behavior
+
+    const authInstance = getAuth();
+    const user = authInstance.currentUser;
+    if (!user) {
+      alert("Please log in to add income.");
+      return;
+    }
+    
+    const incomeInput = document.getElementById("incomeInput");
+    const incomeValue = incomeInput.value.trim();
+    const amount = parseFloat(incomeValue);
+    
+    if (!incomeValue || isNaN(amount) || amount <= 0) {
+      alert("Please enter a valid income amount.");
+      return;
+    }
+
+    // Prepare the income data object
+    const userId = user.uid;
+    const timestampId = Date.now(); // Use timestamp as unique key
+    const incomeData = {
+      amount: amount,
+      date: new Date().toISOString().split("T")[0], // e.g., "2025-03-29"
+      createdAt: timestampId
+      // You can add additional fields if needed, like category, etc.
+    };
+
+    try {
+      const dbInstance = getDatabase();
+      await set(ref(dbInstance, `users/${userId}/incomeRecords/${timestampId}`), incomeData);
+      alert("Income added successfully!");
+      // Clear the input field after successful submission.
+      incomeInput.value = "";
+      // Optionally, call a function to refresh the income summary/chart here.
+      // e.g., refreshIncomeSummary();
+    } catch (error) {
+      console.error("Error adding income:", error);
+      alert("Failed to add income. Please try again.");
+    }
+  });
+});
+
+    // LocalStorage check
+    function checkScheduledTransactions() {
+      let scheduledTransactions = JSON.parse(localStorage.getItem("scheduledTransactions")) || [];
+      const today = new Date().toISOString().split("T")[0];
+      scheduledTransactions = scheduledTransactions.filter((tx) => {
+        if (tx.date === today) {
+          writeTransactionData(tx.category, tx.amount, tx.date, tx.description);
+          return false;
+        }
+        return true;
+      });
+      localStorage.setItem("scheduledTransactions", JSON.stringify(scheduledTransactions));
+    }
+
+    // Filter Buttons (placeholder logic)
+    const applyFilterBtn = document.getElementById("applyFilterBtn");
+    const clearFilterBtn = document.getElementById("clearFilterBtn");
+    if (applyFilterBtn) {
+      applyFilterBtn.addEventListener("click", () => {
+        alert("Apply filter logic here!");
+        // TODO: Filter logic
+      });
+    }
+    if (clearFilterBtn) {
+      clearFilterBtn.addEventListener("click", () => {
+        document.getElementById("filterCategory").value = "";
+        document.getElementById("filterFrom").value = "";
+        document.getElementById("filterTo").value = "";
+        alert("Filters cleared!");
+      });
+    }
+
+
+
+    // This function updates the profile picture container using the saved image in localStorage.
+function updateProfilePicture() {
+  const profileContainer = document.getElementById("profile-picture");
+  const base64Pic = localStorage.getItem("profilePictureBase64");
+  console.log("updateProfilePicture called, base64Pic:", base64Pic);
+  
+  if (base64Pic) {
+    profileContainer.style.backgroundImage = `url(${base64Pic})`;
+    profileContainer.style.backgroundSize = "cover";
+    profileContainer.style.backgroundPosition = "center";
+    // Clear any inner HTML (like initials)
+    profileContainer.innerHTML = "";
+  } else {
+    console.log("No profile picture found in localStorage.");
+  }
+}
+
+    //PROFILE LOGIC
+    window.app = app; // Expose if needed
+
+/** Wrap everything that references the DOM in DOMContentLoaded **/
+document.addEventListener("DOMContentLoaded", () => {
+  /************************************************
+   * PROFILE PICTURE SETUP
+   ***********************************************/
+   function setProfilePicture(username) {
+  if (!username) return; // If no username is provided, exit the function.
+  
+  // Get the HTML elements that display the profile initial and container.
+  const initialEl = document.getElementById('profile-initial');
+  const pictureEl = document.getElementById('profile-picture');
+  
+  // If either element doesn't exist in the DOM, exit to avoid errors.
+  if (!initialEl || !pictureEl) return;
+
+  // Get the first character of the username, convert it to uppercase.
+  const initial = username.charAt(0).toUpperCase();
+  
+  // Set the text content of the element that shows the initial.
+  initialEl.textContent = initial;
+
+  // Generate a random color for the background.
+  const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+  
+  // Apply the random background color to the profile picture container.
+  pictureEl.style.backgroundColor = randomColor;
+}
+
+// Shared profile picture functions for all pages
+function convertFileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      resolve(reader.result);  // Base64 string is in reader.result
+    };
+
+    reader.onerror = (error) => {
+      reject(error);
+    };
+
+    // Read the file as a Data URL (base64)
+    reader.readAsDataURL(file);
+  });
+}
+
+
+
+function setProfilePicture(username) {
+  const initialEl = document.getElementById("profile-initial");
+  const pictureEl = document.getElementById("profile-picture");
+  
+  if (!initialEl || !pictureEl) return;
+  
+  const initial = username.charAt(0).toUpperCase();
+  console.log("setProfilePicture called, username:", username, "initial:", initial);
+  
+  initialEl.textContent = initial;
+  
+  const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+  pictureEl.style.backgroundColor = randomColor;
+}
+
+
+// Call updateProfilePicture when the DOM is ready.
+
+/*
+  OPTIONAL: If you're using Firebase to store user data across devices,
+  include code here to update localStorage based on Firebase data.
+  This assumes you've already initialized Firebase and have your auth and db references.
+*/
+
+
+
+  
+  
+  /************************************************
+   * MESSAGE MODAL FUNCTIONS
+   ***********************************************/
+  
+  /************************************************
+   * NOTIFICATIONS LOGIC
+   ***********************************************/
+  function getNotifications() {
+    return JSON.parse(localStorage.getItem('notifications')) || [];
+  }
+  function saveNotifications(notifs) {
+    localStorage.setItem('notifications', JSON.stringify(notifs));
+  }
+  function addNotification({ text, icon, type }) {
+    const notifs = getNotifications();
+    notifs.push({
+      id: Date.now().toString(),
+      text,
+      icon,
+      type,
+      read: false
+    });
+    saveNotifications(notifs);
+  }
+  function markNotificationRead(notificationId) {
+    const notifs = getNotifications();
+    const index = notifs.findIndex(n => n.id === notificationId);
+    if (index !== -1) {
+      notifs[index].read = true;
+      saveNotifications(notifs);
+    }
+    openNotificationsMenu();
+  }
+
+  async function checkBudgetsAndGoals() {
+    try {
+      if (!auth.currentUser) {
+        console.warn("No authenticated user");
+        return;
+      }
+      const userId = auth.currentUser.uid;
+      const userRef = ref(db, `users/${userId}`);
+      const snapshot = await get(userRef);
+      if (!snapshot.exists()) {
+        console.log("No data found for user:", userId);
+        return;
+      }
+      const data = snapshot.val();
+      // Check Budget usage
+      if (data.budgets && data.budgets.daily) {
+        const { used, limit } = data.budgets.daily;
+        const usagePercent = (used / limit) * 100;
+        if (usagePercent >= 80 && usagePercent < 100) {
+          addNotification({
+            text: "Careful with spending, you're over 80% of your daily budget!",
+            icon: "💸",
+            type: "budget"
+          });
+        } else if (usagePercent >= 100) {
+          addNotification({
+            text: "You've exceeded your daily budget!",
+            icon: "⚠️",
+            type: "budget"
+          });
+        }
+      }
+      // Check Goals
+      if (data.goals) {
+        Object.keys(data.goals).forEach(goalId => {
+          const goal = data.goals[goalId];
+          if (!goal.completed && goal.savedSoFar >= goal.targetAmount) {
+            update(ref(db, `users/${userId}/goals/${goalId}`), { completed: true });
+            addNotification({
+              text: `Congratulations on achieving your goal: ${goal.name}!`,
+              icon: "🎉",
+              type: "goal"
+            });
+          }
+        });
+      }
+    } catch (error) {
+      console.error("Error checking budgets/goals:", error);
+    }
+  }
+
+  async function handleBellClick() {
+    const welcomeEnabled = (localStorage.getItem('welcomeNotificationsEnabled') === 'true');
+    if (!welcomeEnabled) {
+      alert("Enable welcome notifications from the settings tab!");
+    } else {
+      await checkBudgetsAndGoals();
+      console.log("Bell icon clicked!");
+      openNotificationsMenu();
+    }
+  }
+
+  function openNotificationsMenu() {
+    const notifications = getNotifications();
+    let menuHtml = "";
+    if (notifications.length === 0) {
+      menuHtml = `<div style="padding:10px; text-align:center; color:#888;">No new notifications.</div>`;
+    } else {
+      menuHtml = "<ul style='list-style:none; padding:10px; margin:0;'>";
+      notifications.forEach(notif => {
+        const style = notif.read ? "notif-read" : "notif-unread";
+        menuHtml += `<li class="${style}" style="padding:10px; border-bottom:1px solid #eee; cursor:pointer;"
+            onclick="markNotificationRead('${notif.id}')">
+            ${notif.icon ? notif.icon + " " : ""}${notif.text}
+          </li>`;
+      });
+      menuHtml += "</ul>";
+    }
+    let notifMenu = document.getElementById("notificationsMenu");
+    if (!notifMenu) {
+      notifMenu = document.createElement('div');
+      notifMenu.id = "notificationsMenu";
+      notifMenu.style.position = "absolute";
+      notifMenu.style.top = "60px";
+      notifMenu.style.right = "130px";
+      notifMenu.style.backgroundColor = "#fff";
+      notifMenu.style.border = "1px solid #ccc";
+      notifMenu.style.borderRadius = "6px";
+      notifMenu.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
+      notifMenu.style.padding = "10px";
+      notifMenu.style.zIndex = 10000;
+      document.body.appendChild(notifMenu);
+    }
+    notifMenu.innerHTML = menuHtml;
+    notifMenu.style.display = 'block';
+
+    document.addEventListener('click', function handler(e) {
+      if (!notifMenu.contains(e.target) && e.target.id !== 'bell-icon' && !e.target.closest('#bell-icon')) {
+        notifMenu.style.display = 'none';
+        document.removeEventListener('click', handler);
+      }
+    });
+  }
+
+  // Expose needed functions to the window if your HTML calls them inline:
+  window.handleBellClick = handleBellClick;
+  window.handleMessageClick = handleMessageClick;
+  window.markNotificationRead = markNotificationRead;
+  window.checkBudgetsAndGoals = checkBudgetsAndGoals;
+  window.setProfilePicture = setProfilePicture;
+});
+  </script>
+    <script src="/features/privacyMode.js"></script>
+
+</body>
+</html>

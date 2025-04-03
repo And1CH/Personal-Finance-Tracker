@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profile | FinanceApp</title>
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+/>
+  <!-- Example style consistent with your other pages -->
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #333;
+    }
+
+    /* HEADER / NAV */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fff;
+      padding: 20px 5%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #000;
+    }
+    nav {
+      display: flex;
+      gap: 30px;
+    }
+    nav a {
+      font-size: 1rem;
+      text-decoration: none;
+      color: #000;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #28a745;
+    }
+
+    /* HERO / QUESTION SECTION */
+    .auth-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 5% 40px;
+      min-height: 40vh;
+    }
+    .auth-hero h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #000;
+      animation: fadeInText 1.5s forwards;
+      opacity: 0;
+    }
+    .button-row {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      animation: fadeInButtons 2s forwards;
+      opacity: 0;
+    }
+    .btn {
+      font-size: 1rem;
+      padding: 12px 24px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      background-color: #8c7b6b;
+      color: #fff;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .btn:hover {
+      background-color: #7a6a5c;
+      transform: scale(1.05);
+    }
+
+    /* FORMS */
+    .form-container {
+      max-width: 400px;
+      margin: 0 auto 40px auto;
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 30px;
+      border-radius: 8px;
+      display: none; /* hidden by default */
+      text-align: left;
+    }
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #000;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333;
+    }
+    .form-container input {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+      background: #fff;
+      color: #333;
+    }
+    .form-container input:focus {
+      border-color: #8c7b6b;
+    }
+    .form-container button {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      background-color: #8c7b6b;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+    .form-container button:hover {
+      background-color: #7a6a5c;
+      box-shadow: 0 0 10px rgba(140, 123, 107, 0.5);
+    }
+
+    
+   /* Make the container position its child elements absolutely */
+
+#password-toggle-icon {
+
+  position: absolute;
+  top: 79%;
+  right: 562px;         /* adjust as needed */
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2rem;      /* icon size */
+  color: #666;
+}
+
+
+        /* ANIMATIONS */
+    @keyframes fadeInText {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInButtons {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* FOOTER */
+    footer {
+      position: absolute;
+      top: 750px;
+      left: 590px;
+      text-align: center;
+      padding: 40px 20px;
+      background: #fff;
+      color: #777;
+      margin-top: 40px;
+    }
+
+    
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">FinanceApp</div>
+  <nav>
+    <a href="/mainpages/welcome.html">Home</a>
+    <a href="/mainpages/contact.html">Contact</a>
+    <a href="/mainpages/aboutUs.html">About Us</a>
+  </nav>
+</header>
+
+<!-- HERO / QUESTION SECTION -->
+<section class="auth-hero">
+  <h1 id="question-text">Do you have an account?</h1>
+  <div class="button-row">
+    <button class="btn" onclick="showLogin()">Yes, I do</button>
+    <button class="btn" onclick="showRegister()">No, I do not</button>
+  </div>
+</section>
+
+<!-- LOGIN FORM -->
+<div class="form-container" id="form-container">
+  <h2>Login</h2>
+  <form onsubmit="handleLogin(event)">
+    <div class="form-group">
+      <label for="loginEmail">Email</label>
+      <input type="email" id="loginEmail" placeholder="Your Email" required>
+    </div>
+    <div class="form-group">
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" placeholder="Your Password" required>
+      <i
+      id="password-toggle-icon"
+      class="fa-solid fa-eye-slash toggle-password"
+      onclick="togglePasswordVisibility('loginPassword', this)"
+    ></i>
+    </div>
+    <button type="submit">Login</button>
+  </form>
+</div>
+
+<!-- REGISTER FORM -->
+<div class="form-container" id="register-form">
+  <h2>Register</h2>
+  <form onsubmit="handleRegister(event)">
+    <div class="form-group">
+      <label for="reg-username">Username</label>
+      <input type="text" id="reg-username" placeholder="Your Username" required>
+    </div>
+    <div class="form-group">
+      <label for="reg-email">Email</label>
+      <input type="email" id="reg-email" placeholder="Your Email" required>
+    </div>
+    <div class="form-group">
+      <label for="reg-password">Password</label>
+      <input type="password" id="reg-password" placeholder="Your Password" required>
+      <i
+      id="password-toggle-icon"
+      class="fa-solid fa-eye-slash toggle-password"
+      onclick="togglePasswordVisibility('reg-password', this)"
+    ></i>
+    </div>
+    <button type="submit">Register</button>
+  </form>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2025 FinanceApp. All Rights Reserved.</p>
+</footer>
+
+<!-- FIREBASE AUTH SCRIPTS -->
+<script type="module">
+  // Import necessary Firebase modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+  // ✅ Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBu294QDq5U5sipx8LmIRgZTfvSL7GA_sM",
+    authDomain: "personalfinancetrackerdb.firebaseapp.com",
+    databaseURL: "https://personalfinancetrackerdb-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "personalfinancetrackerdb",
+    storageBucket: "personalfinancetrackerdb.appspot.com",
+    messagingSenderId: "404141477300",
+    appId: "1:404141477300:web:90d2185768e64c6169b6e1",
+    measurementId: "G-9H4NRQ68DJ"
+  };
+
+  // ✅ Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+
+  // ✅ Show Login Form
+  window.showLogin = function () {
+    document.getElementById('form-container').style.display = 'block';
+    document.getElementById('register-form').style.display = 'none';
+  };
+
+  // ✅ Show Register Form
+  window.showRegister = function () {
+    document.getElementById('register-form').style.display = 'block';
+    document.getElementById('form-container').style.display = 'none';
+  };
+
+  // ✅ Handle Registration
+  import { getDatabase, ref, set,get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+  window.handleRegister = async function (event) {
+  console.log("handleRegister triggered");  // This log will tell us if the function is being called
+  event.preventDefault();
+  const email = document.getElementById('reg-email').value;
+  const password = document.getElementById('reg-password').value;
+  const name = document.getElementById('reg-username').value;
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    console.log("user: ", user);  // Log user object to see if the registration was successful
+    const db = getDatabase();
+    console.log('Writing to path: ', 'users/' + user.uid);  // Log the path to check
+    await set(ref(db, 'users/' + user.uid), {
+      name: name,
+      email: email,
+    });
+    alert("Registration successful! Redirecting to the dashboard...");
+    window.location.href = "/minipages/Overview.html";  // Direct redirection after successful registration
+  } catch (error) {
+    alert(`Registration Error: ${error.message}`);
+  }
+};
+
+const email = document.getElementById('loginEmail').value;
+console.log("Registration email:", email);
+
+  // ✅ Handle Login
+
+  window.handleLogin = async function(event) {
+  event.preventDefault();
+  const emailInput = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  
+  try {
+    // Attempt to sign in the user
+    const userCredential = await signInWithEmailAndPassword(auth, emailInput, password);
+    const user = userCredential.user;
+    
+    // Get the database and a reference to the user's node
+    const db = getDatabase();
+    const userRef = ref(db, 'users/' + user.uid);
+    
+    // Save the user's email into the database (this will overwrite any previous data)
+    await set(userRef, { email: user.email });
+    
+    // Read back the data to confirm it was saved correctly
+    const snapshot = await get(userRef);
+    if (snapshot.exists() && snapshot.val().email) {
+      console.log("Email saved to database: " + snapshot.val().email);
+    } else {
+      console.log("Error: Email was not saved in the database.");
+    }
+    
+    alert("Login successful! Redirecting to the dashboard...");
+    window.location.href = "/minipages/Overview.html";
+  } catch (error) {
+    alert("Login Error: " + error.message);
+  }
+};
+
+window.togglePasswordVisibility = function(inputId, iconElement) {
+    const passwordInput = document.getElementById(inputId);
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      iconElement.classList.remove("fa-eye-slash");
+      iconElement.classList.add("fa-eye");
+    } else {
+      passwordInput.type = "password";
+      iconElement.classList.remove("fa-eye");
+      iconElement.classList.add("fa-eye-slash");
+    }
+  };
+
+</script>
+</body>
+</html>
