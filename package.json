@@ -13,4 +13,5 @@
   "dependencies": {
     "nodemailer": "^6.10.0"
   }
+  
 }
