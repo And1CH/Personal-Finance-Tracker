@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Welcome | FinanceApp</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0; 
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #333;
+    }
+
+    /* HEADER / NAV */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fff;
+      padding: 20px 5%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #000;
+    }
+    nav {
+      display: flex;
+      gap: 30px;
+    }
+    nav a {
+      font-size: 1rem;
+      text-decoration: none;
+      color: #000;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #28a745;
+    }
+
+    /* HERO SECTION */
+    .hero-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 80px 5% 60px; /* extra top padding so content isn't hidden behind header */
+      min-height: 75vh;
+    }
+    .hero-text {
+      flex: 1;
+      margin-right: 40px;
+    }
+    .hero-text h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: #000;
+    }
+    .hero-text p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+    .hero-text form {
+      display: flex;
+      max-width: 400px;
+    }
+    .hero-text input {
+      flex: 1;
+      padding: 10px;
+      font-size: 1rem;
+      border: 2px solid #ccc;
+      border-right: none;
+      border-radius: 5px 0 0 5px;
+      outline: none;
+    }
+    .hero-text button {
+      background-color: #8c7b6b; /* a tan/brown from your screenshot */
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 0 5px 5px 0;
+      transition: background-color 0.3s;
+    }
+    .hero-text button:hover {
+      background-color: #7a6a5c;
+    }
+    .hero-image {
+      flex: 1;
+      text-align: right;
+    }
+    /* Increased max-width from 600px to 650px */
+    .hero-image img {
+      width: 100%;
+      max-width: 650px;
+      border-radius: 8px;
+    }
+    .hero-image #briefcaseImage {
+        width: 100%;
+        max-width: 10000px; /* or 1200px, or some large value */
+        border-radius: 8px;
+     } 
+
+
+    
+    /* Reduced profile picture size */
+    #profile-picture {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+    .stars {
+      color: #f1c40f;
+      margin-bottom: 10px;
+    }
+    
+    /* Scrolling container that hides overflow */
+.testimonials-scroller {
+  width: 100%;
+  overflow: hidden;        /* Hide content that moves outside the container */
+  position: relative;
+  margin: 40px auto;       /* Spacing around the section */
+  background-color: #fff;  /* Or any background you like */
+}
+
+/* Inner track that holds all testimonials side by side */
+.testimonials-track {
+  display: flex;
+  white-space: nowrap;     /* Keep testimonials in one line */
+  animation: scroll-left 30s linear infinite; /* 30s for full scroll, repeats infinitely */
+}
+
+/* Each testimonial gets some spacing */
+.testimonial {
+  display: inline-block;   /* Keep each testimonial side by side horizontally */
+  width: 600px;            /* Fixed width so each testimonial is the same size */
+  margin: 0 20px;          /* Space between each testimonial */
+  text-align: center;
+}
+
+/* Keyframes for the right-to-left scroll */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);  /* start off-screen to the right */
+  }
+  100% {
+    transform: translateX(-100%); /* move fully to the left */
+  }
+}
+
+
+    /* CONTENT SECTIONS */
+    .content-section {
+      padding: 60px 5%;
+    }
+    .content-section h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    .content-section p {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    /* Two-column blocks */
+    .content-block {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+    .content-text {
+      flex: 1;
+    }
+    .content-image {
+      flex: 1;
+      text-align: center;
+    }
+    /* Increased max-width from 600px to 650px */
+    .content-image img {
+      width: 100%;
+      max-width: 650px;
+      border-radius: 8px;
+    }
+    /* Reverse row for alternating layout */
+    .reverse-row {
+      flex-direction: row-reverse;
+    }
+
+    /* FINAL CTA */
+    .final-cta {
+      background: #fafafa;
+      padding: 60px 5%;
+      text-align: center;
+    }
+    .final-cta h1 {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .final-cta form {
+      display: inline-flex;
+      max-width: 400px;
+      width: 100%;
+    }
+    .final-cta input {
+      flex: 1;
+      padding: 10px;
+      font-size: 1rem;
+      border: 2px solid #ccc;
+      border-right: none;
+      border-radius: 5px 0 0 5px;
+      outline: none;
+    }
+    .final-cta button {
+      position: absolute;
+      background-color: #8c7b6b;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 0 5px 5px 0;
+      transition: background-color 0.3s;
+    }
+    .final-cta button:hover {
+      background-color: #7a6a5c;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      background: #fff;
+      color: #777;
+    }
+    #get-started-button {
+  position: absolute; 
+  top: 303s0px;     /* Move it 50px from the top (adjust to your liking) */
+  left: 675px;    /* Move it 50px from the left (adjust as well) */
+  /* Optional: if you want to modify size, color, etc. */
+  width: 150px;
+  height: 40px;
+}
+
+  </style>
+</head>
+<body>
+
+<!-- HEADER with "FinanceApp" left and "Pricing | Contact | About Us" right -->
+<header>
+  <div class="logo">FinanceApp</div>
+  <nav>
+    <a href="/mainpages/contact.html">Contact</a>
+    <a href="/mainpages/aboutUs.html">About Us</a>
+  </nav>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero-section" id="hero">
+  <div class="hero-text">
+    <h1>Manage Your Finances Effectively</h1>
+    <p>Track expenses, set budgets, and achieve your financial goals with FinanceApp.</p>
+    <form>
+      <a href="/mainpages/UserProfile.html">
+        <button type="button">Get Started</button>
+      </a>    
+    </form>
+  </div>
+  <div class="hero-image">
+    <!-- same path, just bigger max-width now -->
+    <img id="briefcaseImage" src="/resursi/Briefcase of money.jpeg" alt="Briefcase of money">
+  </div>
+</section>
+
+<!-- TESTIMONIAL with 5 stars + profile picture -->
+<!-- Scrolling Testimonials Container -->
+<div class="testimonials-scroller">
+  <div class="testimonials-track">
+    <!-- Testimonial 1 -->
+    <div class="testimonial">
+      <img src="/resursi/profile picture.png" alt="Profile picture" id="profile-picture">
+      <div class="author">Henry Hall</div>
+      <div class="stars">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+      </div>
+      <blockquote>"FinanceGenius has transformed how I manage my money."</blockquote>
+    </div>
+
+    <!-- Testimonial 2 -->
+    <div class="testimonial">
+      <img src="/resursi/profile picture.png" alt="Profile picture" id="profile-picture">
+      <div class="author">Sarah Brown</div>
+      <div class="stars">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+      </div>
+      <blockquote>"I saved more in 3 months using FinanceGenius than I did all last year!"</blockquote>
+    </div>
+
+    <!-- Testimonial 3 -->
+    <div class="testimonial">
+      <img src="/resursi/profile picture.png" alt="Profile picture" id="profile-picture">
+      <div class="author">James Parker</div>
+      <div class="stars">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+      </div>
+      <blockquote>"Budgeting has never been easier. A real game changer."</blockquote>
+    </div>
+    <!-- Testimonial 4 -->
+    <div class="testimonial">
+      <img src="/resursi/profile picture.png" alt="Profile picture" id="profile-picture">
+      <div class="author">Sarah Brown</div>
+      <div class="stars">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+      </div>
+      <blockquote>"This app was the one of the best decisions of my life!"</blockquote>
+    </div>
+    <!-- Testimonial 5 -->
+    <div class="testimonial">
+      <img src="/resursi/profile picture.png" alt="Profile picture" id="profile-picture">
+      <div class="author">Sarah Brown</div>
+      <div class="stars">
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+      </div>
+      <blockquote>"How did i live before this?"</blockquote>
+    </div>
+
+    <!-- Add as many more testimonials as you want... -->
+  </div>
+</div>
+
+
+<!-- CONTENT SECTIONS -->
+<section class="content-section">
+  <!-- BLOCK 1 -->
+  <div class="content-block">
+    <div class="content-text">
+      <h2>Your Personal Finance Assistant</h2>
+      <p>Budget, track expenses, and plan for the future with FinanceGenius. Gain insights and take control of your finances.</p>
+    </div>
+    <div class="content-image">
+      <img src="/resursi/Personal financial assistant.jpg" alt="Laptop with charts">
+    </div>
+  </div>
+
+  <!-- BLOCK 2 (reverse row) -->
+  <div class="content-block reverse-row">
+    <div class="content-text">
+      <h2>Track Expenses Effortlessly</h2>
+      <p>Easily track your expenses with FinanceGenius to understand where your money is going and make informed financial decisions.</p>
+    </div>
+    <div class="content-image">
+      <img src="/resursi/Laptop with charts.jpg" alt="Tracking expenses">
+    </div>
+  </div>
+
+  <!-- BLOCK 3 -->
+  <div class="content-block">
+    <div class="content-text">
+      <h2>Set Budgets Wisely</h2>
+      <p>Set budgets and financial goals effortlessly, ensuring you stay on track and manage your money effectively.</p>
+    </div>
+    <div class="content-image">
+      <img src="/resursi/Tracking expenses.jpeg" alt="Budget documents">
+    </div>
+  </div>
+
+  <!-- BLOCK 4 (reverse row) -->
+  <div class="content-block reverse-row">
+    <div class="content-text">
+      <h2>Achieve Financial Goals</h2>
+      <p>Reach your financial goals by using FinanceApp to monitor your progress and make informed financial decisions.</p>
+    </div>
+    <div class="content-image">
+      <img src="/resursi/Financial plans.jpeg" alt="Financial plans">
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA SECTION -->
+<section class="final-cta">
+  <h1>Start Your Financial Journey Now</h1>
+  <form>
+    <a href="/mainpages/UserProfile.html">
+      <button id="get-started-button"type="button">Get Started</button>
+    </a>  
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2025 FinanceApp. All Rights Reserved.</p>
+</footer>
+
+<!-- FontAwesome for the stars icons -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+</body>
+</html>
