@@ -33,31 +33,7 @@
       color: #555;
       margin-bottom: 10px;
     }
-    .cta-container {
-      text-align: center;
-    }
-    .cta-input {
-      width: 280px;
-      padding: 8px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      outline: none;
-    }
-    .cta-button {
-      background-color: #8a7253;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      font-size: 14px;
-      cursor: pointer;
-      border-radius: 5px;
-      margin-left: 5px;
-      transition: background 0.3s;
-    }
-    .cta-button:hover {
-      background-color: #705a41;
-    }
+   
     main {
       padding: 10px;
       max-width: 1200px;
@@ -290,95 +266,7 @@
   font-size: 24px;
   font-weight: bold;
 }
-    /* -----------------------
-       MESSAGE POPUP + MENU
-    ------------------------ */
    
-    .form-group {
-      margin-bottom: 15px;
-      text-align: left;
-    }
-    .form-group label {
-      font-size: 0.9rem;
-      margin-bottom: 5px;
-      display: block;
-      color: #353A40;
-    }
-    .form-group input[type="text"],
-    .form-group textarea {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 0.9rem;
-    }
-    textarea { 
-      resize: vertical; 
-    }
-    .modal-buttons {
-      text-align: right;
-      margin-top: 15px;
-    }
-    .modal-buttons button {
-      background-color: #8F7D6F;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-left: 5px;
-      transition: background-color 0.3s;
-    }
-    .modal-buttons button:hover {
-      background-color: #837568;
-    }
-
-    /* ---------------------------
-       DATA SHARING MINI MENU
-    ---------------------------- */
-    .data-sharing-container {
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      margin-bottom: 15px;
-      overflow: hidden; /* hides content if we set a fixed height */
-      transition: height 0.5s; /* animate the height change */
-    }
-    /* Title row (always visible) */
-    .data-sharing-title {
-      background: #f9f9f9;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      font-weight: bold;
-      font-size: 0.95rem;
-      color: #555;
-    }
-    .data-sharing-title i {
-      margin-left: 8px;
-      color: #aaa;
-    }
-
-    /* The expanded content that appears if data sharing is enabled */
-    .data-sharing-expanded {
-      padding: 10px;
-      text-align: left;
-      opacity: 0;           /* fade it in if we want */
-      transform: translateY(10px);
-      transition: opacity 0.5s, transform 0.5s;
-    }
-    .data-sharing-expanded-content {
-      pointer-events: none; /* disabled by default (if locked) */
-    }
-    .data-sharing-expanded .form-group {
-      margin-bottom: 10px;
-    }
-    .data-types label {
-      margin-right: 10px;
-    }
-
-
-    
-
   </style>
 </head>
 <body>
@@ -386,9 +274,7 @@
 
   <!-- Profile Container in Upper Right -->
 <div class="profile-container">
-  <div id="bell-icon" onclick="handleBellClick()" style="cursor:pointer; font-size:24px; color:#8F7D6F; margin-right:8px;">
-    <i class="fas fa-bell"></i>
-  </div>
+  
 
   <div id="profile-picture">
     <span id="profile-initial"></span>
@@ -405,50 +291,50 @@
   <div class="sidebar">
     <div class="logo">
       <i class="fas fa-bars"></i>
-      <span>Finance Tracker</span>
+      <span>TETFinance</span>
     </div>
     <ul class="menu">
       <li>
         <a href="/minipages/Overview.html">
           <i class="fas fa-home"></i>
-          <span>Home</span>
+          <span>Общ преглед</span>
         </a>
       </li>
       <li>
         <a href="/minipages/transactions.html">
           <i class="fas fa-exchange-alt"></i>
-          <span>Transactions</span>
+          <span>Транзакции</span>
         </a>
       </li>
       <li>
         <a href="/minipages/charts.html">
           <i class="fas fa-chart-pie"></i>
-          <span>Charts</span>
+          <span>Визуализация</span>
         </a>
       </li>
       <li>
         <a href="/minipages/budget.html">
           <i class="fas fa-wallet"></i>
-          <span>Budget</span>
+          <span>Бюджети</span>
         </a>
       </li>
       <li>
         <a href="#" class="active">
           <i class="fas fa-bullseye"></i>
-          <span>Goals</span>
+          <span>Цели</span>
         </a>
       </li>
       <!-- AskFinance is now included and set as the active link -->
       <li>
         <a href="/minipages/AskFinance.html" >
           <i class="fas fa-question-circle"></i>
-          <span>AskFinance</span>
+          <span>Финансов бот</span>
         </a>
       </li>
       <li>
-        <a href="#">
+        <a href="/minipages/settings.html">
           <i class="fas fa-cog"></i>
-          <span>Settings</span>
+          <span>Настройки</span>
         </a>
       </li>
     </ul>
@@ -457,8 +343,8 @@
   <!-- MAIN CONTENT -->
   <div class="main-content">
     <header>
-      <h1>Achieve Your Financial Goals</h1>
-      <p>Track expenses, set budgets, and take control with ease.</p>
+      <h1>Постигни своите финансови цели</h1>
+      <p>Поставяй, управлявай и постигай своите финансови цели.</p>
       
     </header>
 
@@ -466,15 +352,15 @@
       <!-- Dashboard Cards Section -->
       <section class="dashboard" id="summaryCards">
         <div class="card">
-          <h3>Total Goals</h3>
+          <h3>Всички цели</h3>
           <p id="totalGoals">5</p>
         </div>
         <div class="card">
-          <h3>Savings Target</h3>
+          <h3>Цел за спестяване</h3>
           <p id="savingsTarget">$10,000</p>
         </div>
         <div class="card">
-          <h3>Montly Savings</h3>
+          <h3>Месечни спестявания</h3>
           <p id="netSavings">$3,200</p>
         </div>
         
@@ -484,22 +370,21 @@
       <section class="content-row">
         <!-- Goal Form Section -->
         <div class="goal-form">
-          <h2>Add a New Goal</h2>
+          <h2>Добави нова цел</h2>
           <form id="goalForm">
-            <input type="text" id="goalName" placeholder="Goal Name" required />
-            <input type="number" id="goalAmount" placeholder="Amount ($)" required />
+            <input type="text" id="goalName" placeholder="Име на целта" required />
+            <input type="number" id="goalAmount" placeholder="Брой ($)" required />
             <select id="goalType">
-              <option value="Save">Save Money</option>
-              <option value="Reduce">Reduce Expenses</option>
-              <option value="Invest">Invest More</option>
+              <option value="Save">Спести пари</option>
+              
             </select>
-            <button type="submit">Save Goal</button>
+            <button type="submit">Въведи цел</button>
           </form>
         </div>
 
         <!-- Chart Section -->
         <div class="chart-container">
-          <h2>Goal Distribution</h2>
+          <h2>Визуализация на цели</h2>
           <canvas id="goalChart"></canvas>
         </div>
       </section>
@@ -509,7 +394,7 @@
   <script type="module" >
 
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,onAuthStateChanged  } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+  import { getAuth, onAuthStateChanged  } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
   import { getDatabase, ref, get, set, update,onValue   } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 
@@ -542,6 +427,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   onAuthStateChanged(auth, async (user) => {
     if (user) {
+      
       const userId = user.uid;
       // Await the username from your database
       let username = await getUsername(userId);
@@ -563,6 +449,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
           fetchGoalsData(userId);
           updateGoalChart();
+
+            
+          
+          
         } else {
           displayNoDataSummary();
         }
@@ -644,17 +534,17 @@ function displayNoDataSummary() {
   const netSavingsEl = document.getElementById("netSavings");
 
   if (totalGoalsEl) {
-    totalGoalsEl.textContent = "No such data as of yet";
+    totalGoalsEl.textContent = "Няма налични данни към момента";
   }
   if (savingsTargetEl) {
-    savingsTargetEl.textContent = "No such data as of yet";
+    savingsTargetEl.textContent = "Няма налични данни към момента";
   }
   if (netSavingsEl) {
-    netSavingsEl.textContent = "No such data as of yet";
+    netSavingsEl.textContent = "Няма налични данни към момента";
   }
   const chartContainer = document.querySelector(".chart-container");
   if (chartContainer) {
-    chartContainer.innerHTML = "<p style='text-align:center;'>No such data as of yet</p>";
+    chartContainer.innerHTML = "<p style='text-align:center;'>Няма налични данни към момента</p>";
   }
 
 
@@ -732,7 +622,7 @@ async function updateGoalChart(forceDummy = false) {
       const goalsRef = ref(db, `users/${userId}/goals`);
       const snapshot = await get(goalsRef);
       if (!snapshot.exists()) {
-        container.innerHTML = "<p style='text-align:center;'>No such data as of yet</p>";
+        container.innerHTML = "<p style='text-align:center;'>Няма налични данни към момента</p>";
         return;
       }
       const goalsData = snapshot.val();
@@ -752,7 +642,7 @@ async function updateGoalChart(forceDummy = false) {
       });
       // If no valid data was aggregated, display a message.
       if (labels.length === 0 || values.length === 0) {
-        container.innerHTML = "<p style='text-align:center;'>No such data as of yet</p>";
+        container.innerHTML = "<p style='text-align:center;'>Няма налични данни към момента</p>";
         return;
       }
       chartData = {
@@ -763,7 +653,7 @@ async function updateGoalChart(forceDummy = false) {
       };
     } catch (error) {
       console.error("Error fetching chart data:", error);
-      container.innerHTML = "<p style='text-align:center;'>No such data as of yet</p>";
+      container.innerHTML = "<p style='text-align:center;'>Няма налични данни към момента</p>";
       return;
     }
   }
@@ -812,7 +702,7 @@ document.getElementById("goalForm").addEventListener("submit", (e) => {
     createdAt: Date.now()
   })
   .then(async () => {
-  alert("Goal saved successfully!");
+  alert("Целта ви беше добавена успешно!");
   e.target.reset();
   await fetchGoalsData(auth.currentUser.uid);
   await updateGoalChart();
@@ -878,152 +768,7 @@ document.addEventListener("DOMContentLoaded", () => {
   pictureEl.style.backgroundColor = randomColor;
 }
 
-  // Example usage
-
-  /************************************************
-   * MESSAGE MODAL FUNCTIONS
-   ***********************************************/
- 
-  /************************************************
-   * NOTIFICATIONS LOGIC
-   ***********************************************/
-  function getNotifications() {
-    return JSON.parse(localStorage.getItem('notifications')) || [];
-  }
-  function saveNotifications(notifs) {
-    localStorage.setItem('notifications', JSON.stringify(notifs));
-  }
-  function addNotification({ text, icon, type }) {
-    const notifs = getNotifications();
-    notifs.push({
-      id: Date.now().toString(),
-      text,
-      icon,
-      type,
-      read: false
-    });
-    saveNotifications(notifs);
-  }
-  function markNotificationRead(notificationId) {
-    const notifs = getNotifications();
-    const index = notifs.findIndex(n => n.id === notificationId);
-    if (index !== -1) {
-      notifs[index].read = true;
-      saveNotifications(notifs);
-    }
-    openNotificationsMenu();
-  }
-
-  async function checkBudgetsAndGoals() {
-    try {
-      if (!auth.currentUser) {
-        console.warn("No authenticated user");
-        return;
-      }
-      const userId = auth.currentUser.uid;
-      const userRef = ref(db, `users/${userId}`);
-      const snapshot = await get(userRef);
-      if (!snapshot.exists()) {
-        console.log("No data found for user:", userId);
-        return;
-      }
-      const data = snapshot.val();
-      // Check Budget usage
-      if (data.budgets && data.budgets.daily) {
-        const { used, limit } = data.budgets.daily;
-        const usagePercent = (used / limit) * 100;
-        if (usagePercent >= 80 && usagePercent < 100) {
-          addNotification({
-            text: "Careful with spending, you're over 80% of your daily budget!",
-            icon: "💸",
-            type: "budget"
-          });
-        } else if (usagePercent >= 100) {
-          addNotification({
-            text: "You've exceeded your daily budget!",
-            icon: "⚠️",
-            type: "budget"
-          });
-        }
-      }
-      // Check Goals
-      if (data.goals) {
-        Object.keys(data.goals).forEach(goalId => {
-          const goal = data.goals[goalId];
-          if (!goal.completed && goal.savedSoFar >= goal.targetAmount) {
-            update(ref(db, `users/${userId}/goals/${goalId}`), { completed: true });
-            addNotification({
-              text: `Congratulations on achieving your goal: ${goal.name}!`,
-              icon: "🎉",
-              type: "goal"
-            });
-          }
-        });
-      }
-    } catch (error) {
-      console.error("Error checking budgets/goals:", error);
-    }
-  }
-
-  async function handleBellClick() {
-    const welcomeEnabled = (localStorage.getItem('welcomeNotificationsEnabled') === 'true');
-    if (!welcomeEnabled) {
-      alert("Enable welcome notifications from the settings tab!");
-    } else {
-      await checkBudgetsAndGoals();
-      console.log("Bell icon clicked!");
-      openNotificationsMenu();
-    }
-  }
-
-  function openNotificationsMenu() {
-    const notifications = getNotifications();
-    let menuHtml = "";
-    if (notifications.length === 0) {
-      menuHtml = `<div style="padding:10px; text-align:center; color:#888;">No new notifications.</div>`;
-    } else {
-      menuHtml = "<ul style='list-style:none; padding:10px; margin:0;'>";
-      notifications.forEach(notif => {
-        const style = notif.read ? "notif-read" : "notif-unread";
-        menuHtml += `<li class="${style}" style="padding:10px; border-bottom:1px solid #eee; cursor:pointer;"
-            onclick="markNotificationRead('${notif.id}')">
-            ${notif.icon ? notif.icon + " " : ""}${notif.text}
-          </li>`;
-      });
-      menuHtml += "</ul>";
-    }
-    let notifMenu = document.getElementById("notificationsMenu");
-    if (!notifMenu) {
-      notifMenu = document.createElement('div');
-      notifMenu.id = "notificationsMenu";
-      notifMenu.style.position = "absolute";
-      notifMenu.style.top = "60px";
-      notifMenu.style.right = "130px";
-      notifMenu.style.backgroundColor = "#fff";
-      notifMenu.style.border = "1px solid #ccc";
-      notifMenu.style.borderRadius = "6px";
-      notifMenu.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
-      notifMenu.style.padding = "10px";
-      notifMenu.style.zIndex = 10000;
-      document.body.appendChild(notifMenu);
-    }
-    notifMenu.innerHTML = menuHtml;
-    notifMenu.style.display = 'block';
-
-    document.addEventListener('click', function handler(e) {
-      if (!notifMenu.contains(e.target) && e.target.id !== 'bell-icon' && !e.target.closest('#bell-icon')) {
-        notifMenu.style.display = 'none';
-        document.removeEventListener('click', handler);
-      }
-    });
-  }
-
-  // Expose needed functions to the window if your HTML calls them inline:
-  window.handleBellClick = handleBellClick;
-  window.markNotificationRead = markNotificationRead;
-  window.checkBudgetsAndGoals = checkBudgetsAndGoals;
   window.setProfilePicture = setProfilePicture;
-  window.app = app;
 
 });
 

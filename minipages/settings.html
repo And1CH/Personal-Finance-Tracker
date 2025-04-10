@@ -11,13 +11,7 @@
   <script type="text/javascript"
         src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
 </script>
-<script type="text/javascript">
-   (function(){
-      emailjs.init({
-        publicKey: "CVlL4G0KFS12d7itb",
-      });
-   })();
-</script>
+
 
   <style>
     /* Global Reset */
@@ -74,7 +68,6 @@
     .menu li a span { display: none; margin-left: 10px; }
     .sidebar:hover .menu li a span { display: inline-block; }
     .menu li a.active { color: #8F7D6F; }
-    .menu li a:hover { background-color: #8F7D6F; color: #fff; }
     
     /* Main Content */
     .main-content {
@@ -109,16 +102,17 @@
     }
     .settings-card {
       background-color: #fff;
-      padding: 20px;
+      padding: 2vh 2vw;           /* 2% of viewport height for top/bottom, 2% width for left/right */
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.07);
       text-align: center;
       transition: transform 0.2s;
       cursor: move;
       overflow: hidden;
+      
     }
     .settings-card:hover { transform: scale(1.02); }
-    .settings-card h3 { margin-bottom: 10px; font-size: 18px; color: #353A40; }
+    .settings-card h3 { margin-bottom: 10px;   font-size: 2vh      ; color: #353A40;  }
     .settings-card button {
       background-color: #8F7D6F;
       color: white;
@@ -127,15 +121,20 @@
       border-radius: 5px;
       cursor: pointer;
       transition: background-color 0.3s;
+      
+
     }
     .settings-card button:hover { background-color: #837568; }
     
     /* Profile Card */
     #card-profile {
       height: 120px;
+      width: 470px;
+
       margin-top: -30px;
       position: relative;
     }
+    
     .profile-menu {
       position: absolute;
       width: 100%;
@@ -181,24 +180,7 @@
       background-color: #837568;
     }
     
-    /* Notification Card */
-    #card-notifications {
-      height: 120px;
-      margin-top: -30px;
-      position: relative;
-    }
-    .notification-menu {
-      position: absolute;
-      width: 100%;
-      top: 50px;
-      display: block;
-      opacity: 0;
-      transform: translateY(15px);
-      margin-top: 5px;
-      text-align: left;
-
-      transition: opacity 0.5s, transform 0.5s;
-    }
+   
     /* Toggle Switch CSS */
     .toggle-container {
       display: flex;
@@ -250,45 +232,12 @@
       transform: translateX(26px);
     }
     
-    /* Draggable Notification Cancel Button */
-    #notification-cancel {
-      position: absolute;
-      bottom: -30px;
-      right: 180px;
-    }
-    #notification-cancel button {
-      background-color: #8F7D6F;
-      color: white;
-      padding: 8px 12px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    #notification-cancel button:hover {
-      background-color: #837568;
-    }
-
-    #notification-save {
-      position: absolute;
-      bottom: -30px;
-      right: 260px;
-    }
-    #notification-save button {
-      background-color: #8F7D6F;
-      color: white;
-      padding: 8px 12px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    #notification-save button:hover {
-      background-color: #837568;
-    }
+   
 
 #card-privacy {
-  height: 120px;}
+  height: 120px;
+  width: 470px;
+}
                   /* Privacy Menu Hidden by Default */
 .privacy-menu {
   position: absolute;
@@ -425,6 +374,7 @@ input:checked + .slider:before {
   overflow: hidden;
   /* The card will start at 120px tall */
   height: 120px;
+  width: 470px;
   position: relative; /* so the menu can be absolutely positioned inside */
 }
 
@@ -470,7 +420,7 @@ input:checked + .slider:before {
 #security-cancel {
   position: absolute;
   bottom: 20px;
-  left: 200px;
+  left: 220px;
 }
 #security-cancel button {
   background-color: #8F7D6F;
@@ -612,7 +562,6 @@ input:checked + .slider:before {
       align-items: center;
       z-index: 10000;
     }
-    /* Message Icon styling */
     
     /* Profile picture styling */
     #profile-picture {
@@ -633,169 +582,9 @@ input:checked + .slider:before {
   font-weight: bold;
 }
 
-    /* -----------------------
-       MESSAGE POPUP + MENU
-    ------------------------ */
-    #messageModal {
-      position: fixed;
-      top: 0; 
-      left: 0;
-      width: 100%; 
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      display: none; /* hidden by default */
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-    .message-container {
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      width: 400px;
-      max-width: 90%;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.5s, transform 0.5s;
-    }
-    .message-container h2 {
-      margin-bottom: 15px;
-      color: #353A40;
-      text-align: center;
-    }
-    .form-group {
-      margin-bottom: 15px;
-      text-align: left;
-    }
-    .form-group label {
-      font-size: 0.9rem;
-      margin-bottom: 5px;
-      display: block;
-      color: #353A40;
-    }
-    .form-group input[type="text"],
-    .form-group textarea {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 0.9rem;
-    }
-    textarea { 
-      resize: vertical; 
-    }
-    .modal-buttons {
-      text-align: right;
-      margin-top: 15px;
-    }
-    .modal-buttons button {
-      background-color: #8F7D6F;
-      color: white;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-left: 5px;
-      transition: background-color 0.3s;
-    }
-    .modal-buttons button:hover {
-      background-color: #837568;
-    }
-
-    /* ---------------------------
-       DATA SHARING MINI MENU
-    ---------------------------- */
-    .data-sharing-container {
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      margin-bottom: 15px;
-      overflow: hidden; /* hides content if we set a fixed height */
-      transition: height 0.5s; /* animate the height change */
-    }
-    /* Title row (always visible) */
-    .data-sharing-title {
-      background: #f9f9f9;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      font-weight: bold;
-      font-size: 0.95rem;
-      color: #555;
-    }
-    .data-sharing-title i {
-      margin-left: 8px;
-      color: #aaa;
-    }
-
-    /* The expanded content that appears if data sharing is enabled */
-    .data-sharing-expanded {
-      padding: 10px;
-      text-align: left;
-      opacity: 0;           /* fade it in if we want */
-      transform: translateY(10px);
-      transition: opacity 0.5s, transform 0.5s;
-    }
-    .data-sharing-expanded-content {
-      pointer-events: none; /* disabled by default (if locked) */
-    }
-    .data-sharing-expanded .form-group {
-      margin-bottom: 10px;
-    }
-    .data-types label {
-      margin-right: 10px;
-    }
-
-
-    /* Dark overlay background */
-.otp-modal-overlay {
-  position: fixed;
-  top: 0; 
-  left: 0;
-  width: 100%; 
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 9999; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center;
-}
-
-/* Centered modal box */
-.otp-modal-content {
-  background: #fff;
-  padding: 20px 30px;
-  border-radius: 8px;
-  text-align: center;
-  max-width: 300px;
-  width: 90%;
-}
-
-/* Optional styling for the input */
-#otpInput {
-  width: 100%;
-  padding: 8px;
-  font-size: 1rem;
-  margin-top: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-/* Buttons styling (adjust as needed) */
-#otpSubmitButton, #otpCancelButton {
-  background-color: #8F7D6F;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 0 5px;
-}
-#otpSubmitButton:hover, #otpCancelButton:hover {
-  background-color: #837568;
-}
+   
 
 #password-toggle-icon {
-
 position: absolute;
 top: 35px;
 right: 20px;         /* adjust as needed */
@@ -805,136 +594,77 @@ font-size: 1.2rem;      /* icon size */
 color: #666;
 }
 
+@media (max-width: 500px) {
+  .settings-card {
+    flex: 0 0 90%;            /* each card takes 90% of container */
+    margin: 2vh auto;         /* vertical gap + center */
+  }
+  /* collapse the sidebar for true full‑width on tiny devices */
+  .sidebar { display: none; }
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 2vh 2vw;
+  }
+}
+
   </style>
 </head>
 <body>
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="logo">
-      <i class="fas fa-bars"></i> <span>Finance Tracker</span>
+      <i class="fas fa-bars"></i> <span>TETFinance</span>
     </div>
     <ul class="menu">
-      <li><a href="/minipages/Overview.html"><i class="fas fa-home"></i><span>Overview</span></a></li>
-      <li><a href="/minipages/transactions.html"><i class="fas fa-exchange-alt"></i><span>Transactions</span></a></li>
-      <li><a href="/minipages/charts.html"><i class="fas fa-chart-pie"></i><span>Charts</span></a></li>
-      <li><a href="/minipages/budget.html"><i class="fas fa-wallet"></i><span>Budget</span></a></li>
-      <li><a href="/minipages/goals.html"><i class="fas fa-bullseye"></i><span>Goals</span></a></li>
-      <li><a href="/minipages/AskFinance.html"><i class="fas fa-question-circle"></i><span>AskFinance</span></a></li>
-      <li><a class="active" href="/minipages/settings.html"><i class="fas fa-cog"></i><span>Settings</span></a></li>
+      <li><a href="/minipages/Overview.html"><i class="fas fa-home"></i><span>Общ преглед</span></a></li>
+      <li><a href="/minipages/transactions.html"><i class="fas fa-exchange-alt"></i><span>Транзакции</span></a></li>
+      <li><a href="/minipages/charts.html"><i class="fas fa-chart-pie"></i><span>Визуализация</span></a></li>
+      <li><a href="/minipages/budget.html"><i class="fas fa-wallet"></i><span>Бюджети</span></a></li>
+      <li><a href="/minipages/goals.html"><i class="fas fa-bullseye"></i><span>Цели</span></a></li>
+      <li><a href="/minipages/AskFinance.html"><i class="fas fa-question-circle"></i><span>Финансов бот</span></a></li>
+      <li><a class="active" href="/minipages/settings.html"><i class="fas fa-cog"></i><span>Настройки</span></a></li>
     </ul>
   </div>
 
   <!-- In settings.html, add this container in the body where you want the profile component to appear -->
- <!-- Profile Container in Upper Right -->
- <div class="profile-container">
-  <div id="bell-icon" onclick="handleBellClick()" style="cursor:pointer; font-size:24px; color:#8F7D6F; margin-right:8px;">
-    <i class="fas fa-bell"></i>
-  </div>
  
-  <div id="profile-picture">
-    <span id="profile-initial"></span>
-  </div>
-</div>
-
-<!-- OTP Modal (hidden by default) -->
-<div id="otpModal" class="otp-modal-overlay" style="display:none;">
-  <div class="otp-modal-content" id="otpModalContent">
-    <h2>Enter One-Time Passcode</h2>
-    <input type="text" id="otpInput" placeholder="6-digit code" />
-    <div style="margin-top: 15px;">
-      <button id="otpSubmitButton">Submit</button>
-      <button id="otpCancelButton">Cancel</button>
+ 
+  <div class="profile-container">
+ 
+    <div id="profile-picture">
+      <span id="profile-initial"></span>
     </div>
   </div>
-</div>
+  
 
 
-  <!-- The Modal Overlay for sending messages -->
-  <div id="messageModal">
-    <div class="message-container" id="messageContainer">
-      <h2>Send Message</h2>
-      <form id="messageForm">
-        <!-- Basic Fields -->
-        <div class="form-group">
-          <label for="toField">To:</label>
-          <input type="text" id="toField" placeholder="Enter recipient name">
-        </div>
-        <div class="form-group">
-          <label for="titleField">Title:</label>
-          <input type="text" id="titleField" placeholder="Message title">
-        </div>
-        <div class="form-group">
-          <label for="contentField">Content:</label>
-          <textarea id="contentField" placeholder="Type your message here" rows="4"></textarea>
-        </div>
-
-        <!-- Data Sharing Mini Menu -->
-        <div class="data-sharing-container" id="dataSharingContainer">
-          <div class="data-sharing-title">
-            Data Sharing
-            <i class="fas fa-lock" id="lockIcon"></i>
-          </div>
-          <div class="data-sharing-expanded" id="dataSharingExpanded">
-            <div class="data-sharing-expanded-content">
-              <div class="form-group">
-                <label style="font-weight: bold;">Type of Data</label>
-                <div class="data-types">
-                  <label><input type="checkbox" name="dataType" value="transactions"> Transactions</label>
-                  <label><input type="checkbox" name="dataType" value="budgets"> Budgets</label>
-                  <label><input type="checkbox" name="dataType" value="goals"> Goals</label>
-                  <label><input type="checkbox" name="dataType" value="charts"> Charts</label>
-                </div>
-              </div>
-              <div class="form-group">
-                <label style="font-weight: bold;">Date Range</label>
-                <div style="display: flex; gap: 10px;">
-                  <div>
-                    <label for="dataFrom">From:</label>
-                    <input type="date" id="dataFrom">
-                  </div>
-                  <div>
-                    <label for="dataTo">To:</label>
-                    <input type="date" id="dataTo">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- End of Data Sharing Mini Menu -->
-
-        <div class="modal-buttons">
-          <button type="submit">Send</button>
-          <button type="button" onclick="closeMessageModal()">Cancel</button>
-        </div>
-      </form>
-    </div>
-  </div>
+  
 
   <!-- MAIN CONTENT -->
   <div class="main-content">
     <header id="settings-header">
-      <h1>Settings</h1>
-      <p>Customize your preferences and manage your account settings.</p>
+      <h1>Настройки<h1>
+      <p>Персонализирай предпочитанията си и управлявай настройките на акаунта си</p>
     </header>
 
     <div class="settings-container">
       <!-- Profile Settings Card -->
       <div class="settings-card" id="card-profile">
-        <h3>Profile Settings</h3>
-        <button id="profileButton" onclick="expandProfileCard()">Edit Profile</button>
+        <h3>Настройки за профила</h3>
+        <button id="profileButton" onclick="expandProfileCard()">Промени настройки</button>
         
         <!-- Hidden content that appears upon expansion -->
         <div class="profile-menu">
           <form>
             <div>
-              <label for="profileName">New Name:</label>
+              <label for="profileName">Ново име:</label>
               <input type="text" id="profileName" placeholder="Your name" style="z-index: 99;" />
             </div>
-            <label for="profilePic">Profile Picture:</label>
+            <label for="profilePic">Профилна снимка:</label>
               <div class="file-upload-container">
                   <label for="profilePic" class="custom-file-upload">
-                  <i class="fas fa-upload"></i> Choose File
+                  <i class="fas fa-upload"></i> Избери файл
                   </label>
                   <input type="file" id="profilePic" accept="image/*" style="display: none;">
               </div>
@@ -946,70 +676,35 @@ color: #666;
             </div>
             <!-- Draggable Save and Cancel button containers -->
             <div id="save-button">
-              <button type="button" onclick="saveProfileChanges()">Save</button>
+              <button type="button" onclick="saveProfileChanges()">Запази</button>
             </div>
             <div id="cancel-button">
-              <button type="button" onclick="collapseProfileCard()">Cancel</button>
+              <button type="button" onclick="collapseProfileCard()">Отмени</button>
             </div>
           </form>
         </div>
       </div>
 
-      <!-- Notification Settings Card -->
-      <div class="settings-card" id="card-notifications">
-        <h3>Notification Settings</h3>
-        <button id="notificationButton" onclick="expandNotificationCard()">Notification Preferences</button>
-        
-        <!-- Hidden content for notification settings -->
-        <div class="notification-menu">
-          <div class="toggle-container">
-            <span>Email notifications</span>
-            <label class="toggle-switch">
-              <input type="checkbox" id="emailToggle">
-              <span class="slider"></span>
-            </label>
-          </div>
-          <div class="toggle-container">
-            <span>Welcome notifications</span>
-            <label class="toggle-switch">
-              <input type="checkbox" id="welcomeToggle">
-              <span class="slider"></span>
-            </label>
-          </div>
-          <!-- Draggable Cancel button for notification settings -->
-          <div id="notification-cancel">
-            <button type="button" onclick="collapseNotificationCard()">Cancel</button>
-          </div>
-          <div id="notification-save">
-            <button type="submit" >Save</button>
-          </div>
-        </div>
-      </div>
+      
 
      <!-- Privacy Settings Card -->
 <div class="settings-card" id="card-privacy" style="position: relative">
-  <h3>Privacy Settings</h3>
-  <button id="privacyButton" onclick="expandPrivacyCard()">Privacy Controls</button>
+  <h3>Настройки за поверителност</h3>
+  <button id="privacyButton" onclick="expandPrivacyCard()">Промени настройки</button>
   
   <!-- Hidden privacy menu -->
   <div class="privacy-menu">
-    <div class="toggle-container">
-      <span>Share data with 3rd parties</span>
-      <label class="toggle-switch" for="shareDataToggle">
-        <input type="checkbox" id="shareDataToggle">
-        <span class="slider"></span>
-      </label>
-    </div>
+    
    
     <div class="toggle-container">
-      <span>Privacy Mode</span>
+      <span>Скрит режим</span>
       <label class="toggle-switch">
         <input type="checkbox" id="privacyModeToggle">
         <span class="slider"></span>
       </label>
     </div>
     <div class="toggle-container">
-      <span>Inactivity lock</span>
+      <span>Заключване при неактивност</span>
       <label class="toggle-switch">
         <input type="checkbox" id="inactivityLockToggle">
         <span class="slider"></span>
@@ -1017,21 +712,20 @@ color: #666;
     </div>
     <!-- Draggable Cancel button to collapse the menu -->
     <div id="privacy-cancel">
-      <button type="button" onclick="collapsePrivacyCard()">Cancel</button>
+      <button type="button" onclick="collapsePrivacyCard()">Отмени</button>
     </div>
 
     <div id="privacy-save">
-      <button type="button" onclick="collapsePrivacyCard()">Save</button>
+      <button type="button" onclick="collapsePrivacyCard()">Запази</button>
     </div>
   </div>
 </div>
 
 
 <!-- Security Settings Card -->
-<!-- Security Settings Card -->
 <div class="settings-card" id="card-security">
-  <h3>Security Settings</h3>
-  <button id="securityButton" onclick="expandSecurityCard()">Change Settings</button>
+  <h3>Настройки за сигурност</h3>
+  <button id="securityButton" onclick="expandSecurityCard()">Промени настройки</button>
 
   <!-- Hidden security menu that slides/fades in -->
   <div class="security-menu">
@@ -1039,7 +733,7 @@ color: #666;
     <form>
       <!-- Change Password Field -->
       <div>
-        <label for="newPassword">Change Password:</label>
+        <label for="newPassword">Промени парола:</label>
         <input type="password" id="newPassword" placeholder="Enter new password">
         <i
         id="password-toggle-icon"
@@ -1048,35 +742,23 @@ color: #666;
       ></i>
       </div>
 
-      <!-- Recovery Email Field -->
-      <div>
-        <label for="recoveryEmail">Recovery Email:</label>
-        <input type="email" id="recoveryEmail" placeholder="Enter your recovery email">
-      </div>
+    
 
-      <!-- Two-Factor Authentication Toggle -->
-      <div class="toggle-container" style="margin-bottom: 10px;">
-        <span>Two-Factor Authentication (highly recommended)</span>
-        <label class="toggle-switch">
-          <input type="checkbox" id="twoFactorToggle">
-          <span class="slider"></span>
-        </label>
-      </div>
-
+     
     
 
       <!-- Delete Account Button -->
       <div style="margin-top: 10px;">
-        <button type="button" onclick="deleteAccount()">Delete Account</button>
+        <button type="button" onclick="deleteAccount()">Изтрий профил</button>
       </div>
 
       <!-- Draggable Cancel button to collapse the card -->
       <div id="security-cancel">
-        <button type="button" onclick="collapseSecurityCard()">Cancel</button>
+        <button type="button" onclick="collapseSecurityCard()">Отмени</button>
       </div>
 
       <div id="security-save">
-        <button id="securitySaveButton" type="button" >Save</button>
+        <button id="securitySaveButton" type="button" >Запази</button>
       </div>
     </form>
   </div>
@@ -1084,10 +766,10 @@ color: #666;
 
   <div id="lockModal">
     <div class="lock-container">
-      <h2>Session Locked</h2>
-      <p>Please enter your password to unlock.</p>
+      <h2>Сесията беше заключена</h2>
+      <p>Моля въведете вашата парола, за да продължите.</p>
       <input type="password" id="unlockPassword" placeholder="Password">
-      <button onclick="unlock()">Unlock</button>
+      <button onclick="unlock()">Отключи</button>
     </div>
   </div>
   
@@ -1098,8 +780,8 @@ color: #666;
   
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-  import { getDatabase, ref, set, get, update,remove } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+  import { getAuth, onAuthStateChanged, deleteUser } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+  import { getDatabase, ref, set, get, update, remove, ref as dbRef } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
 
 // Firebase configuration – replace with your credentials
@@ -1444,121 +1126,6 @@ function fileToBase64(file) {
 
 
 
-
-
-//notification card js 
-    function expandNotificationCard() {
-      const notificationBtn = document.getElementById("notificationButton");
-      const notificationCard = document.getElementById("card-notifications");
-      const notificationMenu = notificationCard.querySelector(".notification-menu");
-
-      // Fade out the Notification Preferences button
-      notificationBtn.style.transition = "opacity 0.3s";
-      notificationBtn.style.opacity = 0;
-
-      // Animate card's height from 120px to 250px
-      const startHeight = 120;
-      const endHeight = 160;
-      const duration = 500;
-      const startTime = performance.now();
-
-      function animateHeight(currentTime) {
-        const elapsed = currentTime - startTime;
-        const fraction = Math.min(elapsed / duration, 1);
-        const currentHeight = startHeight + (endHeight - startHeight) * fraction;
-        notificationCard.style.height = currentHeight + "px";
-
-        // Start the menu fade/slide earlier (fraction > 0.5)
-        if (fraction > 0.5) {
-          notificationMenu.style.opacity = 1;
-          notificationMenu.style.transform = "translateY(0)";
-        }
-
-        if (fraction < 1) {
-          requestAnimationFrame(animateHeight);
-        }
-      }
-      requestAnimationFrame(animateHeight);
-    } 
-
-
-    document.addEventListener('DOMContentLoaded', function() {
-  const welcomeToggle = document.getElementById('welcomeToggle');
-  if (welcomeToggle) {
-    console.log("Welcome toggle found!");
-    // Restore toggle state on load
-    welcomeToggle.checked = (localStorage.getItem('welcomeNotificationsEnabled') === 'true');
-    console.log("Welcome notifications are", welcomeToggle.checked ? "ON" : "OFF");
-
-    // Save the state whenever the user flips the toggle
-    welcomeToggle.addEventListener('change', function() {
-      localStorage.setItem('welcomeNotificationsEnabled', welcomeToggle.checked);
-      console.log("Welcome notifications are now", welcomeToggle.checked ? "ON" : "OFF");
-    });
-  }
-});
-
-
-    function collapseNotificationCard() {
-      const notificationBtn = document.getElementById("notificationButton");
-      const notificationCard = document.getElementById("card-notifications");
-      const notificationMenu = notificationCard.querySelector(".notification-menu");
-
-      // Fade out and slide down the notification menu
-      notificationMenu.style.transition = "opacity 0.5s, transform 0.5s";
-      notificationMenu.style.opacity = 0;
-      notificationMenu.style.transform = "translateY(15px)";
-
-      // Animate card's height from 250px back to 120px
-      const startHeight = 160;
-      const endHeight = 120;
-      const duration = 1000;
-      const startTime = performance.now();
-
-      function animateCollapse(currentTime) {
-        const elapsed = currentTime - startTime;
-        const fraction = Math.min(elapsed / duration, 1);
-        const currentHeight = startHeight - (startHeight - endHeight) * fraction;
-        notificationCard.style.height = currentHeight + "px";
-
-        if (fraction < 1) {
-          requestAnimationFrame(animateCollapse);
-        } else {
-          // Once collapse is complete, show the Notification Preferences button again
-          notificationBtn.style.transition = "opacity 0.3s";
-          notificationBtn.style.opacity = 1;
-        }
-      }
-      requestAnimationFrame(animateCollapse);
-    }
-
-//start
-    
-   /**
- * Sends a notification email to the user.
- *  - If no email has ever been sent, it sends a special "first email" welcome.
- *  - Otherwise, it checks the user's budgets/goals and sends a relevant message.
- */
-async function sendMeaningfulNotificationEmail() {
-  
-
-// -------------------------------------
-// Attach event listener to the Save button
-// -------------------------------------
-document.getElementById('notification-save').addEventListener('click', async function() {
-  // If the toggle is checked, send the email
-  const emailToggle = document.getElementById('emailToggle');
-  if (emailToggle && emailToggle.checked) {
-    await sendMeaningfulNotificationEmail();
-  } else {
-    console.log("Email notifications not enabled. Email will not be sent.");
-  }
-  // You can also save other notification settings here, if needed
-});
-} 
-
-
-
 //privacy card js
     function expandPrivacyCard() {
   const privacyBtn = document.getElementById("privacyButton");
@@ -1571,7 +1138,7 @@ document.getElementById('notification-save').addEventListener('click', async fun
 
   // Animate card's height from 120px to 250px
   const startHeight = 120;
-  const endHeight = 220;
+  const endHeight = 190;
   const duration = 1000;
   const startTime = performance.now();
 
@@ -1610,8 +1177,6 @@ document.addEventListener('DOMContentLoaded', function() {
 window.expandProfileCard = expandProfileCard;
 window.collapseProfileCard = collapseProfileCard;
 window.saveProfileChanges = saveProfileChanges;
-window.expandNotificationCard = expandNotificationCard;
-window.collapseNotificationCard = collapseNotificationCard;
 window.expandPrivacyCard = expandPrivacyCard;
 window.collapsePrivacyCard = collapsePrivacyCard;
 window.expandSecurityCard = expandSecurityCard;
@@ -1628,7 +1193,7 @@ function collapsePrivacyCard() {
   privacyMenu.style.transform = "translateY(15px)";
 
   // Animate card's height from 250px back to 120px
-  const startHeight = 220;
+  const startHeight = 190;
   const endHeight = 120;
   const duration = 1000;
   const startTime = performance.now();
@@ -1678,7 +1243,7 @@ function expandSecurityCard() {
 
     // Animate from 120px to 300px (or your desired final height)
     const startHeight = 120;
-    const endHeight = 300;
+    const endHeight = 220;
     const duration = 1000; // 1 second
     const startTime = performance.now();
 
@@ -1711,142 +1276,20 @@ export async function setTwoFactorEnabled(userId, isEnabled) {
   console.log(`2FA is now ${isEnabled ? 'enabled' : 'disabled'} for user ${userId}`);
 }
 
-function generateOTP(length = 6) {
-  let otp = '';
-  for (let i = 0; i < length; i++) {
-    otp += Math.floor(Math.random() * 10).toString();
-  }
-  return otp;
-}
 
 
-export async function loginWithTwoFactor(email, password) {
-  const auth = getAuth();
-
-  // 1. Attempt normal sign-in.
-  const userCred = await signInWithEmailAndPassword(auth, email, password);
-  const user = userCred.user;
-  const userId = user.uid;
-
-  // 2. Check 2FA status.
-  const securitySnap = await get(ref(db, 'users/' + userId + '/security'));
-  const securityData = securitySnap.val();
-
-  if (!securityData || !securityData.twoFactorEnabled) {
-    // No 2FA – proceed normally.
-    return { status: 'success', message: 'Logged in without 2FA' };
-  }
-
-  // 3. 2FA is enabled – generate OTP.
-  const otp = generateOTP(6);
-  const expiresAt = Date.now() + 15 * 60 * 1000; // Expires in 15 minutes.
-  await set(ref(db, 'twoFactor/' + userId), { otp, expiresAt });
-
-  // 4. Send OTP via email.
-  await sendEmailOTP(user.email, otp);
-
-  // Return status so the UI can prompt for OTP entry.
-  return { status: '2fa-required', message: 'OTP sent to email', userId };
-}
 
 
-export async function verifyOTP(userId, enteredCode) {
-  const otpRef = ref(db, 'twoFactor/' + userId);
-  const snap = await get(otpRef);
-  
-  if (!snap.exists()) {
-    return { success: false, error: 'No OTP found. It may have expired.' };
-  }
-  
-  const { otp, expiresAt } = snap.val();
-  if (Date.now() > expiresAt) {
-    return { success: false, error: 'OTP expired.' };
-  }
-  if (otp !== enteredCode) {
-    return { success: false, error: 'Incorrect OTP.' };
-  }
-  
-  await remove(otpRef);
-  return { success: true };
-}
 
 
-export async function sendEmailOTP(email, otp) {
-  const templateParams = {
-    to_email: email,
-    subject: 'Your One-Time Passcode (OTP)',
-    message: `Your OTP is: ${otp}. It expires in 15 minutes.`
-  };
-
-  try {
-    const response = await emailjs.send(
-      'service_c8vr5z9',      // Replace with your actual EmailJS service ID
-      'template_v14754w',     // Replace with your actual EmailJS template ID
-      templateParams
-    );
-    console.log('EmailJS response:', response);
-  } catch (error) {
-    console.error('Failed to send OTP via EmailJS:', error);
-    throw new Error('Failed to send OTP email.');
-  }
-}
 
 
-export async function initiatePasswordChange(userId, userEmail) {
-
-  
-  // Check if 2FA is enabled for this user.
-  const securitySnap = await get(ref(db, 'users/' + userId + '/security'));
-  const securityData = securitySnap.val();
-  
-  if (!securityData || !securityData.twoFactorEnabled) {
-    return { status: 'no-2fa', message: '2FA not enabled, proceed with password change directly.' };
-  }
-  
-  // Generate and store OTP.
-  const otp = generateOTP(6);
-  const expiresAt = Date.now() + 15 * 60 * 1000; // 15 minutes from now.
-  await set(ref(db, 'twoFactor/' + userId), { otp, expiresAt });
-  
-  // Send the OTP email via EmailJS.
-  await sendEmailOTP(userEmail, otp);
-  
-  return { status: '2fa-required', message: 'OTP sent to email for password change.' };
-}
-  // Example: Save security settings changes to Firebase
-  
-
-
-  //end
-  async function handlePasswordChange() {
-  const userId = auth.currentUser.uid; // Ensure the user is logged in.
-  const userEmail = auth.currentUser.email;
-  
-  const result = await initiatePasswordChange(userId, userEmail);
-  if (result.status === 'no-2fa') {
-    // Directly update the password:
-    await auth.currentUser.updatePassword(newPassword);
-    alert('Password changed successfully.');
-  } else if (result.status === '2fa-required') {
-    // Show UI for the user to enter the OTP.
-    // For example:
-    const enteredOTP = prompt('Enter the OTP sent to your email:');
-    const verifyResult = await verifyOTP(userId, enteredOTP);
-    if (verifyResult.success) {
-      await auth.currentUser.updatePassword(newPassword);
-      alert('Password changed successfully.');
-    } else {
-      alert('Error: ' + verifyResult.error);
-    }
-  }
-}
 
   async function saveSecuritySettings() {
   try {
     // 1) Gather input values from the security card
     const newPassword = document.getElementById('newPassword').value.trim();
     const recoveryEmail = document.getElementById('recoveryEmail').value.trim();
-    const twoFactorEnabled = document.getElementById('twoFactorToggle').checked;
     console.log('things updated');
     // 2) (Optional) Validate inputs as needed before proceeding
 
@@ -1885,7 +1328,7 @@ window.saveSecuritySettings = function saveSecuritySettings() {
     securityMenu.style.transform = "translateY(15px)";
 
     // Animate from 300px back down to 120px
-    const startHeight = 300;
+    const startHeight = 220;
     const endHeight = 120;
     const duration = 1000;
     const startTime = performance.now();
@@ -1908,20 +1351,43 @@ window.saveSecuritySettings = function saveSecuritySettings() {
   }
 
   /* Optional placeholder functions for the security menu items */
-  function openChangePassword() {
-    alert("Change Password functionality coming soon!");
-  }
   
-  function openRecoverySettings() {
-    alert("Recovery Email/Phone settings coming soon!");
+  
+ 
+  async function deleteAccount() {
+  const user = auth.currentUser;
+  if (!user) {
+    alert("Няма влязъл потребител.");
+    return;
   }
-  function confirmDeleteAccount() {
-    if (confirm("Are you sure you want to delete your account?")) {
-      alert("Account deletion initiated.");
+
+  const ok = confirm("Сигурни ли сте, че искате да изтриете своя профил? Това действие не може да бъде отменено.");
+  if (!ok) return;
+
+  try {
+    // 1) Remove their database node
+    await remove(dbRef(db, `users/${user.uid}`));
+
+    // 2) Delete their auth account
+    await deleteUser(user);
+
+    alert("Профилът е изтрит успешно.");
+    // 3) Redirect to login or landing page
+    window.location.href = "/login.html";
+  } catch (err) {
+    console.error("Грешка при изтриване на профила:", err);
+    if (err.code === "auth/requires-recent-login") {
+      alert("Моля влезте отново, за да потвърдите изтриването на профила.");
+      // Optionally, redirect them to re-authenticate
+    } else {
+      alert("Грешка при изтриване на профила: " + err.message);
     }
   }
+}
 
 
+
+window.deleteAccount = deleteAccount;
 
 
 
@@ -2050,157 +1516,6 @@ function updateProfilePicture() {
 
 /** Wrap everything that references the DOM in DOMContentLoaded **/
 document.addEventListener("DOMContentLoaded", () => { 
-  /************************************************
-   * PROFILE PICTURE SETUP
-   ***********************************************/
-   
- 
-
-  /************************************************
-   * MESSAGE MODAL FUNCTIONS
-   ***********************************************/
- 
-  /************************************************
-   * NOTIFICATIONS LOGIC
-   ***********************************************/
-  function getNotifications() {
-    return JSON.parse(localStorage.getItem('notifications')) || [];
-  }
-  function saveNotifications(notifs) {
-    localStorage.setItem('notifications', JSON.stringify(notifs));
-  }
-  function addNotification({ text, icon, type }) {
-    const notifs = getNotifications();
-    notifs.push({
-      id: Date.now().toString(),
-      text,
-      icon,
-      type,
-      read: false
-    });
-    saveNotifications(notifs);
-  }
-  function markNotificationRead(notificationId) {
-    const notifs = getNotifications();
-    const index = notifs.findIndex(n => n.id === notificationId);
-    if (index !== -1) {
-      notifs[index].read = true;
-      saveNotifications(notifs);
-    }
-    openNotificationsMenu();
-  }
-
-  async function checkBudgetsAndGoals() {
-    try {
-      if (!auth.currentUser) {
-        console.warn("No authenticated user");
-        return;
-      }
-      const userId = auth.currentUser.uid;
-      const userRef = ref(db, `users/${userId}`);
-      const snapshot = await get(userRef);
-      if (!snapshot.exists()) {
-        console.log("No data found for user:", userId);
-        return;
-      }
-      const data = snapshot.val();
-      // Check Budget usage
-      if (data.budgets && data.budgets.daily) {
-        const { used, limit } = data.budgets.daily;
-        const usagePercent = (used / limit) * 100;
-        if (usagePercent >= 80 && usagePercent < 100) {
-          addNotification({
-            text: "Careful with spending, you're over 80% of your daily budget!",
-            icon: "💸",
-            type: "budget"
-          });
-        } else if (usagePercent >= 100) {
-          addNotification({
-            text: "You've exceeded your daily budget!",
-            icon: "⚠️",
-            type: "budget"
-          });
-        }
-      }
-      // Check Goals
-      if (data.goals) {
-        Object.keys(data.goals).forEach(goalId => {
-          const goal = data.goals[goalId];
-          if (!goal.completed && goal.savedSoFar >= goal.targetAmount) {
-            update(ref(db, `users/${userId}/goals/${goalId}`), { completed: true });
-            addNotification({
-              text: `Congratulations on achieving your goal: ${goal.name}!`,
-              icon: "🎉",
-              type: "goal"
-            });
-          }
-        });
-      }
-    } catch (error) {
-      console.error("Error checking budgets/goals:", error);
-    }
-  }
-
-  async function handleBellClick() {
-    const welcomeEnabled = (localStorage.getItem('welcomeNotificationsEnabled') === 'true');
-    if (!welcomeEnabled) {
-      alert("Enable welcome notifications from the settings tab!");
-    } else {
-      await checkBudgetsAndGoals();
-      console.log("Bell icon clicked!");
-      openNotificationsMenu();
-    }
-  }
-  window.handleMessageClick = handleMessageClick;
-
-
-  function openNotificationsMenu() {
-    const notifications = getNotifications();
-    let menuHtml = "";
-    if (notifications.length === 0) {
-      menuHtml = `<div style="padding:10px; text-align:center; color:#888;">No new notifications.</div>`;
-    } else {
-      menuHtml = "<ul style='list-style:none; padding:10px; margin:0;'>";
-      notifications.forEach(notif => {
-        const style = notif.read ? "notif-read" : "notif-unread";
-        menuHtml += `<li class="${style}" style="padding:10px; border-bottom:1px solid #eee; cursor:pointer;"
-            onclick="markNotificationRead('${notif.id}')">
-            ${notif.icon ? notif.icon + " " : ""}${notif.text}
-          </li>`;
-      });
-      menuHtml += "</ul>";
-    }
-    let notifMenu = document.getElementById("notificationsMenu");
-    if (!notifMenu) {
-      notifMenu = document.createElement('div');
-      notifMenu.id = "notificationsMenu";
-      notifMenu.style.position = "absolute";
-      notifMenu.style.top = "60px";
-      notifMenu.style.right = "130px";
-      notifMenu.style.backgroundColor = "#fff";
-      notifMenu.style.border = "1px solid #ccc";
-      notifMenu.style.borderRadius = "6px";
-      notifMenu.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
-      notifMenu.style.padding = "10px";
-      notifMenu.style.zIndex = 10000;
-      document.body.appendChild(notifMenu);
-    }
-    notifMenu.innerHTML = menuHtml;
-    notifMenu.style.display = 'block';
-
-    document.addEventListener('click', function handler(e) {
-      if (!notifMenu.contains(e.target) && e.target.id !== 'bell-icon' && !e.target.closest('#bell-icon')) {
-        notifMenu.style.display = 'none';
-        document.removeEventListener('click', handler);
-      }
-    });
-  }
-
-  // Expose needed functions to the window if your HTML calls them inline:
-  window.handleBellClick = handleBellClick;
-  window.handleMessageClick = handleMessageClick;
-  window.markNotificationRead = markNotificationRead;
-  window.checkBudgetsAndGoals = checkBudgetsAndGoals;
   window.setProfilePicture = setProfilePicture;
 });
 

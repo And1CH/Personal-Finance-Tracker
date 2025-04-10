@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Transactions</title>
+  <title>Транзакции</title>
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -247,6 +247,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
+      margin: 20px;
     }
     .transaction-form,
     .scheduled-transaction-form {
@@ -257,6 +258,8 @@
       flex: 1;
       min-width: 280px;
       margin-bottom: 20px;
+      margin-top: 35px;
+      margin-left: 20px;
     }
     .transaction-form h2,
     .scheduled-transaction-form h2 {
@@ -404,12 +407,13 @@
       padding: 15px;
       position: absolute;
       margin-top: 20px;
-      bottom: 50px; /* Just an example if you want some spacing from the bottom */
-      left: 20px;
+      bottom: 80px; /* Just an example if you want some spacing from the bottom */
+      left: 40px;
       right: 0;
       z-index: 999;    
-      max-width: 440px;
+      max-width: 470px;
 
+      height: 92px;
 
 }
 /* Reminder Bar Styles */
@@ -500,11 +504,11 @@
   padding: 15px;
   position: absolute;
   margin-top: 20px;
-  bottom: 40px; /* Adjust if you want spacing from the bottom */
-  left: 500px;
+  bottom: 80px; /* Adjust if you want spacing from the bottom */
+  left: 530px;
   right: 0;
   z-index: 999;
-  max-width: 900px;
+  max-width: 940px;
   max-height: 100px;
 }
 
@@ -574,15 +578,15 @@
   
 
   <!-- Profile Container in Upper Right -->
-<div class="profile-container">
-  <div id="bell-icon" onclick="handleBellClick()" style="cursor:pointer; font-size:24px; color:#8F7D6F; margin-right:8px; position: absolute; top: 15px; right: 105px;">
-    <i class="fas fa-bell"></i>
-  </div>
+
  
-  <div id="profile-picture">
-    <span id="profile-initial"></span>
+  <div class="profile-container">
+ 
+    <div id="profile-picture">
+      <span id="profile-initial"></span>
+    </div>
   </div>
-</div>
+  
 
   <!-- The Modal Overlay for sending messages -->
  
@@ -594,16 +598,16 @@
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="logo">
-      <i class="fas fa-bars"></i> <span>Finance Tracker</span>
+      <i class="fas fa-bars"></i> <span>TETFinance</span>
     </div>
     <ul class="menu">
-      <li><a href="/minipages/Overview.html"><i class="fas fa-home"></i><span> Overview</span></a></li>
-      <li><a class="active" href="/minipages/transactions.html"><i class="fas fa-exchange-alt"></i><span> Transactions</span></a></li>
-      <li><a href="/minipages/charts.html"><i class="fas fa-chart-pie"></i><span> Charts</span></a></li>
-      <li><a href="/minipages/budget.html"><i class="fas fa-wallet"></i><span> Budget</span></a></li>
-      <li><a href="/minipages/goals.html"><i class="fas fa-bullseye"></i><span> Goals</span></a></li>
-      <li><a href="/minipages/AskFinance.html"><i class="fas fa-question-circle"></i><span> AskFinance</span></a></li>
-      <li><a href="/minipages/settings.html"><i class="fas fa-cog"></i><span> Settings</span></a></li>
+      <li><a href="/minipages/Overview.html"><i class="fas fa-home"></i><span> Общ преглед</span></a></li>
+      <li><a class="active" href="/minipages/transactions.html"><i class="fas fa-exchange-alt"></i><span> Транзакции</span></a></li>
+      <li><a href="/minipages/charts.html"><i class="fas fa-chart-pie"></i><span> Визуализация</span></a></li>
+      <li><a href="/minipages/budget.html"><i class="fas fa-wallet"></i><span> Бюджети</span></a></li>
+      <li><a href="/minipages/goals.html"><i class="fas fa-bullseye"></i><span> Цели</span></a></li>
+      <li><a href="/minipages/AskFinance.html"><i class="fas fa-question-circle"></i><span> Финансов бот</span></a></li>
+      <li><a href="/minipages/settings.html"><i class="fas fa-cog"></i><span> Настройки</span></a></li>
     </ul>
   </div>
 
@@ -613,125 +617,86 @@
     <div class="transactions-header">
       <div class="header-right">
         <div class="stats">
-          <span><i class="fas fa-receipt"></i> Transactions: <strong id="transactionCount">0</strong></span>
-          <span class="total-amount"><i class="fas fa-dollar-sign"></i> Total: $<strong id="transactionTotal">0.00</strong></span>
+          <span><i class="fas fa-receipt"></i> Транзакции: <strong id="transactionCount">0</strong></span>
+          <span class="total-amount"><i class="fas fa-dollar-sign"></i> Общо: $<strong id="transactionTotal">0.00</strong></span>
         </div>
       </div>
     </div>
-
-    <!-- CONTENT AREA -->
-    <div class="content-area">
-      <!-- HORIZONTAL FILTER BAR -->
-      <div class="filter-bar">
-        <!-- "Filter" text with icon -->
-        <div class="filter-title">
-          <i class="fas fa-filter"></i> Filter
-        </div>
-
-        <!-- Category -->
-        <div class="filter-group">
-          <label for="filterCategory"><i class="fas fa-list"></i> Category</label>
-          <select id="filterCategory">
-            <option value="">All</option>
-            <option value="Food">Food</option>
-            <option value="Transportation">Transportation</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="Shopping">Shopping</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-
-        <!-- From Date -->
-        <div class="filter-group">
-          <label for="filterFrom"><i class="fas fa-calendar"></i> From (Date)</label>
-          <input type="date" id="filterFrom" />
-        </div>
-
-        <!-- To Date -->
-        <div class="filter-group">
-          <label for="filterTo"><i class="fas fa-calendar"></i> To (Date)</label>
-          <input type="date" id="filterTo" />
-        </div>
-
-        <!-- Filter Buttons (Apply / Clear) -->
-        <button id="applyFilterBtn"><i class="fas fa-search"></i> Apply Filter</button>
-        <button id="clearFilterBtn"><i class="fas fa-undo"></i> Clear Filter</button>
-      </div>
 
       <!-- FORMS CONTAINER -->
       <div class="forms-container">
         <!-- ADD TRANSACTION FORM -->
         <div class="transaction-form">
-          <h2><i class="fas fa-plus-circle"></i> Add Transaction</h2>
+          <h2><i class="fas fa-plus-circle"></i> Добави транзакция</h2>
           <form id="transactionForm">
-            <label for="category"><i class="fas fa-list"></i> Category:</label>
+            <label for="category"><i class="fas fa-list"></i> Категория:</label>
             <select id="category">
-              <option value="Food">Food</option>
-              <option value="Transportation">Transportation</option>
-              <option value="Entertainment">Entertainment</option>
-              <option value="Shopping">Shopping</option>
-              <option value="Other">Other</option>
+              <option value="Храна">Храна</option>
+              <option value="Транспорт">Транспорт</option>
+              <option value="Забавление">Забавление</option>
+              <option value="Пазаруване">Пазаруване</option>
+              <option value="Други">Други</option>
             </select>
 
-            <label for="amount"><i class="fas fa-dollar-sign"></i> Amount ($):</label>
+            <label for="amount"><i class="fas fa-dollar-sign"></i> Брой:</label>
             <input type="number" id="amount" required />
 
-            <label for="description"><i class="fas fa-align-left"></i> Description:</label>
+            <label for="description"><i class="fas fa-align-left"></i> Описание:</label>
             <input type="text" id="description" required />
 
-            <label for="date"><i class="fas fa-calendar-alt"></i> Date:</label>
+            <label for="date"><i class="fas fa-calendar-alt"></i> Дата:</label>
             <input type="date" id="date" required />
 
-            <button type="submit"><i class="fas fa-check"></i> Add Transaction</button>
+            <button type="submit"><i class="fas fa-check"></i> Въведи</button>
           </form>
         </div>
 
         <!-- SCHEDULED TRANSACTION FORM -->
         <div class="scheduled-transaction-form">
-          <h2><i class="fas fa-clock"></i> Schedule a Transaction</h2>
+          <h2><i class="fas fa-clock"></i> Насрочи транзакция</h2>
           <form id="scheduledTransactionForm">
-            <label for="scheduledDate"><i class="fas fa-calendar"></i> Date:</label>
+            <label for="scheduledDate"><i class="fas fa-calendar"></i> Дата:</label>
             <input type="date" id="scheduledDate" required />
 
-            <label for="scheduledCategory"><i class="fas fa-list"></i> Category:</label>
+            <label for="scheduledCategory"><i class="fas fa-list"></i> Категория:</label>
             <select id="scheduledCategory">
-              <option value="Food">Food</option>
-              <option value="Entertainment">Entertainment</option>
-              <option value="Transportation">Transportation</option>
-              <option value="Shopping">Shopping</option>
-              <option value="Other">Other</option>
+              <option value="Храна">Храна</option>
+              <option value="Забавление">Забавление</option>
+              <option value="Транспорт">Транспорт</option>
+              <option value="Пазаруване">Пазаруване</option>
+              <option value="Други">Други</option>
             </select>
 
-            <label for="scheduledAmount"><i class="fas fa-dollar-sign"></i> Amount:</label>
+            <label for="scheduledAmount"><i class="fas fa-dollar-sign"></i> Брой:</label>
             <input type="number" id="scheduledAmount" required />
 
-            <label for="scheduledDescription"><i class="fas fa-align-left"></i> Description:</label>
+            <label for="scheduledDescription"><i class="fas fa-align-left"></i> Описание:</label>
             <input type="text" id="scheduledDescription" required />
 
-            <button type="submit"><i class="fas fa-save"></i> Schedule Transaction</button>
+            <button type="submit"><i class="fas fa-save"></i> Въведи</button>
           </form>
         </div>
 
         <div class="filter-bar" id="reminderBar">
           <div class="filter-title">
-            <i class="fas fa-clipboard-list"></i> Reminders
+            <i class="fas fa-clipboard-list"></i> Напомняние
           </div>
           <div class="filter-group">
-            <label for="reminderInput">Add a reminder</label>
+            <label for="reminderInput">Добави напомняне</label>
             <input type="text" id="reminderInput" placeholder="Type a reminder..." />
           </div>
-          <button id="addReminderBtn"><i class="fas fa-plus-circle"></i> Add</button>
+          <button type="button"id="addReminderBtn"><i class="fas fa-plus-circle"></i> Въведи</button>
         </div>
       
         <div class="income-bar" id="incomeBar">
           <div class="filter-title">
-            <i class="fas fa-dollar-sign"></i> Income
+            <i class="fas fa-dollar-sign"></i> Доход
           </div>
           <div class="filter-group">
-            <label for="incomeInput">Add income</label>
+            <label for="incomeInput">Добави доход</label>
             <input type="text" id="incomeInput" placeholder="Enter an income..." />
           </div>
-          <button id="addIncomeBtn"><i class="fas fa-plus-circle"></i> Add</button>
+          <button id="addIncomeBtn"><i class="fas fa-plus-circle"></i> Въведи</button>
         </div>
       
       </div>
@@ -742,8 +707,7 @@
   <!-- SCRIPTS: Keep your existing Firebase logic, event listeners, etc. -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
-    import { getDatabase, ref, push,get,set,update } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-analytics.js";
+    import { getDatabase, ref, push,get,set, onValue } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-database.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
 
     // Firebase config
@@ -760,56 +724,58 @@
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-    const analytics = getAnalytics(app);
     const auth = getAuth(app);
     const db = getDatabase(app);
 
   // References to the elements in your HTML
-  const transactionCountEl = document.getElementById("transactionCount");
-  const transactionTotalEl = document.getElementById("transactionTotal");
+  // Get the DOM elements for displaying transaction counts and totals
+const transactionCountEl = document.getElementById("transactionCount");
+const transactionTotalEl = document.getElementById("transactionTotal");
 
-  // 1) Function to fetch and process transactions
-  async function fetchAndProcessTransactions(userId) {
-    // Path: users/{userId}/Transactions
-    const transactionsRef = ref(db, `users/${userId}/Transactions`);
-    try {
-      const snapshot = await get(transactionsRef);
-      if (snapshot.exists()) {
-        const transactionsData = snapshot.val();
-        let count = 0;
-        let total = 0;
+// Function to update the DOM elements with count and total
+function updateTransactionUI(count, total) {
+  if (transactionCountEl) {
+    transactionCountEl.textContent = count;
+  }
+  if (transactionTotalEl) {
+    transactionTotalEl.textContent = total.toFixed(2); // Format to 2 decimal places
+  }
+}
 
-        // Loop over each transaction child
-        for (const txId in transactionsData) {
-          count++;
-          const tx = transactionsData[txId];
-          // If the transaction has an "amount" property
-          const amount = parseFloat(tx.amount) || 0;
-          total += amount;
-        }
+/**
+ * Subscribes to all transactions for a given user and updates the UI
+ * in real time whenever a change occurs.
+ */
+function subscribeToTransactions(userId) {
+  // Create a reference to the transactions path
+  const transactionsRef = ref(db, `users/${userId}/transactions`);
 
-        updateTransactionUI(count, total);
-      } else {
-        // If no data, show 0
-        updateTransactionUI(0, 0);
+  // Use onValue to listen to changes at this reference
+  onValue(transactionsRef, (snapshot) => {
+    let count = 0;
+    let total = 0;
+    
+    if (snapshot.exists()) {
+      const transactionsData = snapshot.val();
+
+      // Loop over the transactions and recalc the count and sum
+      for (const txId in transactionsData) {
+        count++;
+        const tx = transactionsData[txId];
+        const amount = parseFloat(tx.amount) || 0;
+        total += amount;
       }
-    } catch (error) {
-      console.error("Error fetching transactions:", error);
-      updateTransactionUI(0, 0);
     }
-  }
+    
+    // Update the UI with the new values
+    updateTransactionUI(count, total);
+  }, (error) => {
+    console.error("Error listening for transactions:", error);
+    // On error, you can still update the DOM with zero values if you wish.
+    updateTransactionUI(0, 0);
+  });
+}
 
-  // 2) Function to update the DOM
-  function updateTransactionUI(count, total) {
-    if (transactionCountEl) {
-      transactionCountEl.textContent = count;
-    }
-    if (transactionTotalEl) {
-      // Format to 2 decimal places
-      transactionTotalEl.textContent = total.toFixed(2);
-    }
-  }
 
   // 3) Listen for auth state changes
  // Helper function to fetch the username from your database
@@ -827,6 +793,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Listen for authentication state changes
   onAuthStateChanged(auth, async (user) => {
     if (user) {
+      subscribeToTransactions(user.uid);
 
       const userRef = ref(db, 'users/' + user.uid);
       const snapshot = await get(userRef);
@@ -852,7 +819,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       
       // Now update the transactions UI (which uses your fetchAndProcessTransactions function)
-      fetchAndProcessTransactions(userId);
       console.log("Auth state changed: user is logged in.");
     } else {
       // If no user is logged in, update the UI with dummy data
@@ -863,112 +829,45 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-document.addEventListener("DOMContentLoaded", async () => {
-  // 1) Check if user is authenticated
-  const user = auth.currentUser;
-  if (!user) {
-    console.warn("No authenticated user - skipping reminders logic.");
-    return;
-  }
-  const userId = user.uid;
+document.addEventListener("DOMContentLoaded", () => {
+  // Listen for authentication state changes
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      console.log("User is not authenticated. Reminders functionality disabled.");
+      return;
+    }
+    
+    const userId = user.uid;
+    const addReminderBtn = document.getElementById("addReminderBtn");
+    const reminderInput = document.getElementById("reminderInput");
 
-  // 2) Grab references to our DOM elements
-  document.addEventListener("DOMContentLoaded", async () => {
-  // 1. Check if user is authenticated
-  const user = auth.currentUser;
-  if (!user) {
-    console.warn("No authenticated user - skipping reminders logic.");
-    return;
-  }
-  const userId = user.uid;
-
-  // 2. Grab references to DOM elements for reminders
-  const addReminderBtn = document.getElementById("addReminderBtn");
-  const reminderInput = document.getElementById("reminderInput");
-  const remindersList = document.getElementById("remindersList");
-
-  // 3. Function to load and display reminders from Firebase
-  async function loadReminders() {
-    try {
-      // Clear the current list
-      remindersList.innerHTML = "";
-      const snap = await get(ref(db, `users/${userId}/reminders`));
-      if (snap.exists()) {
-        const data = snap.val();
-        const reminderKeys = Object.keys(data);
-        // Optional: sort reminders by createdAt (newest first)
-        reminderKeys.sort((a, b) => data[b].createdAt - data[a].createdAt);
-        reminderKeys.forEach(key => {
-          const reminder = data[key];
-          const li = document.createElement("li");
-          li.textContent = reminder.text || "No text";
-          remindersList.appendChild(li);
-        });
-      } else {
-        remindersList.innerHTML = "<li>No reminders yet.</li>";
+    // Attach event listener to add reminder button
+    addReminderBtn.addEventListener("click", async () => {
+      const text = reminderInput.value.trim();
+      if (!text) {
+        alert("Моля въведете напомняне");
+        return;
       }
-    } catch (error) {
-      console.error("Error loading reminders:", error);
-      remindersList.innerHTML = "<li>Failed to load reminders.</li>";
-    }
-  }
-
-  // 4. Event listener to add a new reminder
-  addReminderBtn.addEventListener("click", async () => {
-    const text = reminderInput.value.trim();
-    if (!text) {
-      alert("Please enter a reminder.");
-      return;
-    }
-    try {
-      // Create a new reminder using push for a unique key
-      const newReminderRef = push(ref(db, `users/${userId}/reminders`));
-      await set(newReminderRef, {
-        text: text,
-        createdAt: Date.now()
-      });
-      // Clear the input field and reload reminders
-      reminderInput.value = "";
-      loadReminders();
-    } catch (error) {
-      console.error("Error adding reminder:", error);
-      alert("Could not add reminder. See console for details.");
-    }
+      
+      try {
+        // Create a new database reference for this reminder
+        const newReminderRef = push(ref(db, `users/${userId}/reminders`));
+        // Write the reminder text and timestamp to the database
+        await set(newReminderRef, {
+          text: text,
+          createdAt: new Date().toISOString()
+        });
+        
+        // Clear the input field after success
+        reminderInput.value = "";
+        alert("Напомнянето беше добавено успешно!");
+      } catch (error) {
+        console.error("Error adding reminder:", error);
+        alert("An error occurred while adding the reminder. Please try again.");
+      }
+    });
   });
-
-  // 5. Initial load of reminders
-  loadReminders();
 });
-
-
-  // 4) Add event listener for "Add" button
-  addReminderBtn.addEventListener("click", async () => {
-    const text = reminderInput.value.trim();
-    if (!text) {
-      alert("Please enter a reminder.");
-      return;
-    }
-    try {
-      // Create a unique key for each reminder
-      const newRef = push(ref(db, `users/${userId}/reminders`));
-      await set(newRef, {
-        text: text,
-        createdAt: Date.now()
-      });
-      // Clear the input
-      reminderInput.value = "";
-      // Reload the reminders list so the new one appears
-      loadReminders();
-    } catch (error) {
-      console.error("Error adding reminder:", error);
-      alert("Could not add reminder. See console for details.");
-    }
-  });
-
-  // 5) Initial load of reminders
-  loadReminders();
-});
-
 
 
     // Example write function
@@ -979,11 +878,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
       const userID = user.uid;
-      const transactionsRef = ref(database, `users/${userID}/transactions`);
+      const transactionsRef = ref(db, `users/${userID}/transactions`);
       push(transactionsRef, { category, amount, date, description })
         .then(() => {
           console.log("Transaction saved ✅");
-          alert("Transaction added successfully!");
+          alert("Транзакцията беше добавена успешно!");
         })
         .catch((error) => {
           console.error("Error saving transaction ❌", error);
@@ -1005,7 +904,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const date = document.getElementById("date").value;
 
         if (!date || !category || !amount || !description) {
-          alert("Please fill in all fields.");
+          alert("Моля попълнете всички полета.");
           return;
         }
         writeTransactionData(category, amount, date, description);
@@ -1013,7 +912,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       // Schedule Transaction (LocalStorage-based)
-      scheduledTransactionForm.addEventListener("submit", (event) => {
+      scheduledTransactionForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const scheduledDate = document.getElementById("scheduledDate").value;
         const scheduledCategory = document.getElementById("scheduledCategory").value;
@@ -1021,19 +920,37 @@ document.addEventListener("DOMContentLoaded", async () => {
         const scheduledDescription = document.getElementById("scheduledDescription").value;
 
         if (!scheduledDate || !scheduledCategory || !scheduledAmount || !scheduledDescription) {
-          alert("Please fill in all fields.");
+          alert("Моля попълнете всички полета.");
           return;
         }
-        let scheduledTransactions = JSON.parse(localStorage.getItem("scheduledTransactions")) || [];
-        scheduledTransactions.push({
-          date: scheduledDate,
-          category: scheduledCategory,
-          amount: scheduledAmount,
-          description: scheduledDescription
-        });
-        localStorage.setItem("scheduledTransactions", JSON.stringify(scheduledTransactions));
-        alert("Scheduled transaction saved!");
-        scheduledTransactionForm.reset();
+        if (!scheduledDate || !scheduledCategory || !scheduledAmount || !scheduledDescription) {
+    alert("Моля попълнете всички полета.");
+    return;
+  }
+
+  const user = auth.currentUser;
+  if (!user) {
+    alert("Моля влезте в системата, за да насрочите транзакция.");
+    return;
+  }
+
+  try {
+    // Създаваме референция към новия запис в базата:
+    const scheduledRef = ref(db, `users/${user.uid}/scheduledTransactions`);
+    // Пушваме обекта с транзакцията:
+    await push(scheduledRef, {
+      date: scheduledDate,
+      category: scheduledCategory,
+      amount: scheduledAmount,
+      description: scheduledDescription,
+    });
+    
+    alert("Насрочената транзакция беше запазена в базата данни!");
+    scheduledTransactionForm.reset();
+  } catch (error) {
+    console.error("Грешка при записването на насрочената транзакция:", error);
+    alert("Възникна грешка. Моля опитайте отново.");
+  }
       });
 
       // Check scheduled transactions on load
@@ -1059,7 +976,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const amount = parseFloat(incomeValue);
     
     if (!incomeValue || isNaN(amount) || amount <= 0) {
-      alert("Please enter a valid income amount.");
+      alert("Моля въведете валидна сума.");
       return;
     }
 
@@ -1076,14 +993,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const dbInstance = getDatabase();
       await set(ref(dbInstance, `users/${userId}/incomeRecords/${timestampId}`), incomeData);
-      alert("Income added successfully!");
+      alert("Доходът беше добавен успешно!");
       // Clear the input field after successful submission.
       incomeInput.value = "";
       // Optionally, call a function to refresh the income summary/chart here.
       // e.g., refreshIncomeSummary();
     } catch (error) {
       console.error("Error adding income:", error);
-      alert("Failed to add income. Please try again.");
+      alert("Стана грешка при добавянето на дохода. Моля опитайте отново.");
     }
   });
 });
@@ -1102,24 +1019,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       localStorage.setItem("scheduledTransactions", JSON.stringify(scheduledTransactions));
     }
 
-    // Filter Buttons (placeholder logic)
-    const applyFilterBtn = document.getElementById("applyFilterBtn");
-    const clearFilterBtn = document.getElementById("clearFilterBtn");
-    if (applyFilterBtn) {
-      applyFilterBtn.addEventListener("click", () => {
-        alert("Apply filter logic here!");
-        // TODO: Filter logic
-      });
-    }
-    if (clearFilterBtn) {
-      clearFilterBtn.addEventListener("click", () => {
-        document.getElementById("filterCategory").value = "";
-        document.getElementById("filterFrom").value = "";
-        document.getElementById("filterTo").value = "";
-        alert("Filters cleared!");
-      });
-    }
-
+ 
 
 
     // This function updates the profile picture container using the saved image in localStorage.
@@ -1206,161 +1106,9 @@ function setProfilePicture(username) {
 }
 
 
-// Call updateProfilePicture when the DOM is ready.
-
-/*
-  OPTIONAL: If you're using Firebase to store user data across devices,
-  include code here to update localStorage based on Firebase data.
-  This assumes you've already initialized Firebase and have your auth and db references.
-*/
-
 
 
   
-  
-  /************************************************
-   * MESSAGE MODAL FUNCTIONS
-   ***********************************************/
-  
-  /************************************************
-   * NOTIFICATIONS LOGIC
-   ***********************************************/
-  function getNotifications() {
-    return JSON.parse(localStorage.getItem('notifications')) || [];
-  }
-  function saveNotifications(notifs) {
-    localStorage.setItem('notifications', JSON.stringify(notifs));
-  }
-  function addNotification({ text, icon, type }) {
-    const notifs = getNotifications();
-    notifs.push({
-      id: Date.now().toString(),
-      text,
-      icon,
-      type,
-      read: false
-    });
-    saveNotifications(notifs);
-  }
-  function markNotificationRead(notificationId) {
-    const notifs = getNotifications();
-    const index = notifs.findIndex(n => n.id === notificationId);
-    if (index !== -1) {
-      notifs[index].read = true;
-      saveNotifications(notifs);
-    }
-    openNotificationsMenu();
-  }
-
-  async function checkBudgetsAndGoals() {
-    try {
-      if (!auth.currentUser) {
-        console.warn("No authenticated user");
-        return;
-      }
-      const userId = auth.currentUser.uid;
-      const userRef = ref(db, `users/${userId}`);
-      const snapshot = await get(userRef);
-      if (!snapshot.exists()) {
-        console.log("No data found for user:", userId);
-        return;
-      }
-      const data = snapshot.val();
-      // Check Budget usage
-      if (data.budgets && data.budgets.daily) {
-        const { used, limit } = data.budgets.daily;
-        const usagePercent = (used / limit) * 100;
-        if (usagePercent >= 80 && usagePercent < 100) {
-          addNotification({
-            text: "Careful with spending, you're over 80% of your daily budget!",
-            icon: "💸",
-            type: "budget"
-          });
-        } else if (usagePercent >= 100) {
-          addNotification({
-            text: "You've exceeded your daily budget!",
-            icon: "⚠️",
-            type: "budget"
-          });
-        }
-      }
-      // Check Goals
-      if (data.goals) {
-        Object.keys(data.goals).forEach(goalId => {
-          const goal = data.goals[goalId];
-          if (!goal.completed && goal.savedSoFar >= goal.targetAmount) {
-            update(ref(db, `users/${userId}/goals/${goalId}`), { completed: true });
-            addNotification({
-              text: `Congratulations on achieving your goal: ${goal.name}!`,
-              icon: "🎉",
-              type: "goal"
-            });
-          }
-        });
-      }
-    } catch (error) {
-      console.error("Error checking budgets/goals:", error);
-    }
-  }
-
-  async function handleBellClick() {
-    const welcomeEnabled = (localStorage.getItem('welcomeNotificationsEnabled') === 'true');
-    if (!welcomeEnabled) {
-      alert("Enable welcome notifications from the settings tab!");
-    } else {
-      await checkBudgetsAndGoals();
-      console.log("Bell icon clicked!");
-      openNotificationsMenu();
-    }
-  }
-
-  function openNotificationsMenu() {
-    const notifications = getNotifications();
-    let menuHtml = "";
-    if (notifications.length === 0) {
-      menuHtml = `<div style="padding:10px; text-align:center; color:#888;">No new notifications.</div>`;
-    } else {
-      menuHtml = "<ul style='list-style:none; padding:10px; margin:0;'>";
-      notifications.forEach(notif => {
-        const style = notif.read ? "notif-read" : "notif-unread";
-        menuHtml += `<li class="${style}" style="padding:10px; border-bottom:1px solid #eee; cursor:pointer;"
-            onclick="markNotificationRead('${notif.id}')">
-            ${notif.icon ? notif.icon + " " : ""}${notif.text}
-          </li>`;
-      });
-      menuHtml += "</ul>";
-    }
-    let notifMenu = document.getElementById("notificationsMenu");
-    if (!notifMenu) {
-      notifMenu = document.createElement('div');
-      notifMenu.id = "notificationsMenu";
-      notifMenu.style.position = "absolute";
-      notifMenu.style.top = "60px";
-      notifMenu.style.right = "130px";
-      notifMenu.style.backgroundColor = "#fff";
-      notifMenu.style.border = "1px solid #ccc";
-      notifMenu.style.borderRadius = "6px";
-      notifMenu.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
-      notifMenu.style.padding = "10px";
-      notifMenu.style.zIndex = 10000;
-      document.body.appendChild(notifMenu);
-    }
-    notifMenu.innerHTML = menuHtml;
-    notifMenu.style.display = 'block';
-
-    document.addEventListener('click', function handler(e) {
-      if (!notifMenu.contains(e.target) && e.target.id !== 'bell-icon' && !e.target.closest('#bell-icon')) {
-        notifMenu.style.display = 'none';
-        document.removeEventListener('click', handler);
-      }
-    });
-  }
-
-  // Expose needed functions to the window if your HTML calls them inline:
-  window.handleBellClick = handleBellClick;
-  window.handleMessageClick = handleMessageClick;
-  window.markNotificationRead = markNotificationRead;
-  window.checkBudgetsAndGoals = checkBudgetsAndGoals;
   window.setProfilePicture = setProfilePicture;
 });
   </script>

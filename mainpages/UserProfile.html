@@ -93,14 +93,17 @@
 
     /* FORMS */
     .form-container {
+      width: 100%;
       max-width: 400px;
-      margin: 0 auto 40px auto;
+      margin: 20px auto;      /* gives some breathing room on mobile */
+      padding: 1.5rem;
       background-color: #fff;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
       padding: 30px;
       border-radius: 8px;
       display: none; /* hidden by default */
       text-align: left;
+
     }
     .form-container h2 {
       text-align: center;
@@ -190,20 +193,20 @@
 
 <!-- HEADER -->
 <header>
-  <div class="logo">FinanceApp</div>
+  <div class="logo">TETFinance</div>
   <nav>
-    <a href="/mainpages/welcome.html">Home</a>
-    <a href="/mainpages/contact.html">Contact</a>
-    <a href="/mainpages/aboutUs.html">About Us</a>
+    <a href="/mainpages/index.html">Начална страница</a>
+    <a href="/mainpages/contact.html">Контакт</a>
+    <a href="/mainpages/aboutUs.html">Информация за нас </a>
   </nav>
 </header>
 
 <!-- HERO / QUESTION SECTION -->
 <section class="auth-hero">
-  <h1 id="question-text">Do you have an account?</h1>
+  <h1 id="question-text">Имате ли профил?</h1>
   <div class="button-row">
-    <button class="btn" onclick="showLogin()">Yes, I do</button>
-    <button class="btn" onclick="showRegister()">No, I do not</button>
+    <button class="btn" onclick="showLogin()">Да, имам</button>
+    <button class="btn" onclick="showRegister()">Не, нямам</button>
   </div>
 </section>
 
@@ -313,6 +316,12 @@
       name: name,
       email: email,
     });
+
+      // After successful registration or login
+localStorage.setItem('userEmail', email);  // Use email from form
+localStorage.setItem('username', name || ""); // Use name if available
+
+
     alert("Registration successful! Redirecting to the dashboard...");
     window.location.href = "/minipages/Overview.html";  // Direct redirection after successful registration
   } catch (error) {
@@ -342,6 +351,12 @@ console.log("Registration email:", email);
     // Save the user's email into the database (this will overwrite any previous data)
     await set(userRef, { email: user.email });
     
+  // After successful registration or login
+  localStorage.setItem('userEmail', email);  // Use email from form
+localStorage.setItem('username', name || ""); // Use name if available
+
+
+
     // Read back the data to confirm it was saved correctly
     const snapshot = await get(userRef);
     if (snapshot.exists() && snapshot.val().email) {

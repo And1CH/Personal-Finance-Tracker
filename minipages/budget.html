@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Budget Management</title>
+  <title>Управление на бюджети</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -270,87 +270,59 @@
   font-weight: bold;
 }
 
-    /* -----------------------
-       MESSAGE POPUP + MENU
-    ------------------------ */
-
-    .form-group {
-      margin-bottom: 15px;
-      text-align: left;
-    }
-    .form-group label {
-      font-size: 0.9rem;
-      margin-bottom: 5px;
-      display: block;
-      color: #353A40;
-    }
-    .form-group input[type="text"],
-    .form-group textarea {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 0.9rem;
-    }
-    textarea { 
-      resize: vertical; 
-    }
-    
+   
    
   </style>
 </head>
 <body>
 
   <div class="profile-container">
-    <div id="bell-icon" onclick="handleBellClick()" style="cursor:pointer; font-size:24px; color:#8F7D6F; margin-right:8px;">
-      <i class="fas fa-bell"></i>
-    </div>
+    
   
     <div id="profile-picture">
       <span id="profile-initial"></span>
     </div>
   </div>
   
-    <!-- The Modal Overlay for sending messages -->
   
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="logo">
       <i class="fas fa-bars"></i>
-      <span>Finance Tracker</span>
+      <span>TETFinance</span>
     </div>
     <ul class="menu">
-      <li><a href="/minipages/Overview.html"><i class="fas fa-home"></i><span>Overview</span></a></li>
-      <li><a href="/minipages/transactions.html"><i class="fas fa-exchange-alt"></i><span>Transactions</span></a></li>
-      <li><a href="/minipages/charts.html"><i class="fas fa-chart-pie"></i><span>Charts</span></a></li>
+      <li><a href="/minipages/Overview.html"><i class="fas fa-home"></i><span>Общ преглед</span></a></li>
+      <li><a href="/minipages/transactions.html"><i class="fas fa-exchange-alt"></i><span>Транзакции</span></a></li>
+      <li><a href="/minipages/charts.html"><i class="fas fa-chart-pie"></i><span>Визуализация</span></a></li>
       <!-- Mark Budget as active -->
-      <li><a href="#" class="active"><i class="fas fa-wallet"></i><span>Budget</span></a></li>
-      <li><a href="/minipages/goals.html"><i class="fas fa-bullseye"></i><span>Goals</span></a></li>
-      <li><a href="/minipages/AskFinance.html"><i class="fas fa-question-circle"></i><span>AskFinance</span></a></li>
-      <li><a href="#"><i class="fas fa-cog"></i><span>Settings</span></a></li>
+      <li><a href="#" class="active"><i class="fas fa-wallet"></i><span>Бюджети</span></a></li>
+      <li><a href="/minipages/goals.html"><i class="fas fa-bullseye"></i><span>Цели</span></a></li>
+      <li><a href="/minipages/AskFinance.html"><i class="fas fa-question-circle"></i><span>Финансов бот</span></a></li>
+      <li><a href="/minipages/settings.html"><i class="fas fa-cog"></i><span>Настройки</span></a></li>
     </ul>
   </div>
 
   <!-- MAIN CONTENT -->
   <div class="main-content">
     <header>
-      <h1>Budget Management</h1>
-      <p>Track your spending, set limits, and stay on top of your finances.</p>
+      <h1>Управление на бюджети</h1>
+      <p>Управлявай бюджетите си лесно и ефективно.      </p>
     </header>
 
     <main>
       <!-- Budget Summary Cards -->
       <section class="dashboard">
         <div class="card">
-          <h3>Total Budget</h3>
+          <h3>Всички бюджети</h3>
           <p id="totalBudget">$0</p>
         </div>
         <div class="card">
-          <h3>Remaining Budget</h3>
+          <h3>Оставащ бюджет</h3>
           <p id="remainingBudget">$0</p>
         </div>
         <div class="card">
-          <h3>Spent This Month</h3>
+          <h3>Похарчено този месец</h3>
           <p id="spentThisMonth">$0</p>
         </div>
       </section>
@@ -360,17 +332,18 @@
       <section class="content-row">
         <!-- Budget Form -->
         <div class="budget-form">
-          <h2>Add a Budget Category</h2>
+          <h2>Добави бюджет</h2>
           <form>
             <input type="text" placeholder="Category Name" required>
             <input type="number" placeholder="Budget Amount ($)" required>
-            <button type="submit">Save Budget</button>
+            <input type="date" required>
+            <button type="submit">Въведи бюджет</button>
           </form>
         </div>
 
         <!-- Chart Container -->
         <div class="chart-container">
-          <h2>Budget Allocation</h2>
+          <h2>Визуализация на вашите бюджети</h2>
           <canvas id="budgetChart"></canvas>
         </div>
       </section>
@@ -380,8 +353,8 @@
   <script type="module">
     // Import necessary Firebase modules
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-  import { getDatabase, ref, set, get,update,onValue  } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+  import { getDatabase, ref, set, get  } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
   // ✅ Firebase Configuration
   const firebaseConfig = {
@@ -447,101 +420,69 @@ document.addEventListener("DOMContentLoaded", () => {
   const remainingBudgetEl = document.getElementById("remainingBudget");
   const spentThisMonthEl = document.getElementById("spentThisMonth");
 
-  if (totalBudgetEl) totalBudgetEl.textContent = "No such data as of yet";
-  if (remainingBudgetEl) remainingBudgetEl.textContent = "No such data as of yet";
-  if (spentThisMonthEl) spentThisMonthEl.textContent = "No such data as of yet";
+  if (totalBudgetEl) totalBudgetEl.textContent = " Няма налични данни към момента";
+  if (remainingBudgetEl) remainingBudgetEl.textContent = "Няма налични данни към момента";
+  if (spentThisMonthEl) spentThisMonthEl.textContent = "Няма налични данни към момента";
 }
 
 
-async function calculateMonthlySpent(userId) {
-  let totalSpent = 0;
+
+async function calculateMonthlySpent(userId, budgetDate) {
+  // Разделяме годината и месеца
+  const [year, month] = budgetDate.split("-").map(Number);
+
+  // Начало на месеца: 1-во число в 00:00:00
+  const startTs = new Date(year, month - 1, 1, 0, 0, 0, 0).getTime();
+
+  // Край на месеца: последно число в 23:59:59.999
+  const lastDay = new Date(year, month, 0).getDate();
+  const endTs   = new Date(year, month - 1, lastDay, 23, 59, 59, 999).getTime();
+
+  // Четем всички транзакции
   const txnSnapshot = await get(ref(db, `users/${userId}/transactions`));
+  let total = 0;
+
   if (txnSnapshot.exists()) {
     const transactions = Object.values(txnSnapshot.val());
-    console.log("Transactions fetched:", transactions);
-
-    const now = Date.now();
-    const thirtyDaysAgo = now - (30 * 24 * 60 * 60 * 1000);
-
-    transactions.forEach(txn => {
-      // Parse the date string into a timestamp:
-      const txnDate = new Date(txn.date).getTime(); 
-      console.log("Transaction date:", txnDate, "thirtyDaysAgo:", thirtyDaysAgo, "now:", now);
-
-      if (txnDate >= thirtyDaysAgo && txnDate <= now) {
-        totalSpent += Number(txn.amount) || 0;
+    transactions.forEach(tx => {
+      const t = new Date(tx.date).getTime();
+      if (t >= startTs && t <= endTs) {
+        total += Number(tx.amount) || 0;
       }
     });
-
-    console.log("Total spent in last 30 days:", totalSpent);
   }
-  return totalSpent;
+
+  return total;
 }
 
 
 
-async function updateBudgetCards(forceDummy = false) {
-  const totalBudgetEl = document.getElementById("totalBudget");
-  const remainingBudgetEl = document.getElementById("remainingBudget");
-  const spentThisMonthEl = document.getElementById("spentThisMonth");
-
-  if (!totalBudgetEl || !remainingBudgetEl || !spentThisMonthEl) return;
-
-  // If forced dummy data (or user not authenticated), show dummy values
-  if (forceDummy) {
-    totalBudgetEl.textContent = "$15,000";
-    remainingBudgetEl.textContent = "$6,500";
-    spentThisMonthEl.textContent = "$8,500";
-    return;
-  }
-  
+async function updateBudgetCards() {
   const user = auth.currentUser;
-  if (!user) {
-    // Not authenticated → show dummy data
-    totalBudgetEl.textContent = "$15,000";
-    remainingBudgetEl.textContent = "$6,500";
-    spentThisMonthEl.textContent = "$8,500";
-    return;
+  if (!user) { /* ... */ return; }
+  const userId = user.uid;
+
+  const snapshot = await get(ref(db, `users/${userId}/budgetCategories`));
+  if (!snapshot.exists()) { /* ... */ return; }
+
+  const cats = snapshot.val();
+  let totalLimit = 0, totalActualSpent = 0;
+
+  // За всеки бюджетен запис
+  for (const key in cats) {
+    const { limit, date: budgetDate } = cats[key];
+    totalLimit += Number(limit) || 0;
+
+    // сумираме разходите само за месеца на този budgetDate
+    const spent = await calculateMonthlySpent(userId, budgetDate);
+    totalActualSpent += spent;
   }
 
-  try {
-    const userId = user.uid;
-    // Read all budget categories from the database
-    const categoriesRef = ref(db, `users/${userId}/budgetCategories`);
-    const snapshot = await get(categoriesRef);
+  const remaining = totalLimit - totalActualSpent;
 
-    if (!snapshot.exists()) {
-      // Authenticated but no data: display message in the cards area
-      totalBudgetEl.textContent = "No such data as of yet";
-      remainingBudgetEl.textContent = "No such data as of yet";
-      spentThisMonthEl.textContent = "No such data as of yet";
-      return;
-    }
-
-    // Aggregate the budget categories for total limit and spent
-    const categoriesData = snapshot.val();
-    let totalLimit = 0, totalSpent = 0;
-    Object.keys(categoriesData).forEach((key) => {
-      const cat = categoriesData[key];
-      totalLimit += Number(cat.limit) || 0;
-      totalSpent += Number(cat.spent) || 0;
-    });
-    const remaining = totalLimit - totalSpent;
-
-    // Instead of using the spent amount from budgetCategories,
-    // calculate the actual spent over the last 30 days from transactions.
-    const monthlySpent = await calculateMonthlySpent(userId);
-
-    // Update the summary cards
-    totalBudgetEl.textContent = `$${totalLimit.toLocaleString()}`;
-    spentThisMonthEl.textContent = `$${monthlySpent.toLocaleString()}`;
-    remainingBudgetEl.textContent = `$${remaining.toLocaleString()}`;
-  } catch (error) {
-    console.error("Error fetching budget data:", error);
-    totalBudgetEl.textContent = "No such data as of yet";
-    remainingBudgetEl.textContent = "No such data as of yet";
-    spentThisMonthEl.textContent = "No such data as of yet";
-  }
+  document.getElementById("totalBudget").textContent    = `$${totalLimit.toLocaleString()}`;
+  document.getElementById("spentThisMonth").textContent = `$${totalActualSpent.toLocaleString()}`;
+  document.getElementById("remainingBudget").textContent= `$${remaining.toLocaleString()}`;
 }
 
 
@@ -551,6 +492,8 @@ document.querySelector('.budget-form').addEventListener('submit', async (e) => {
   // 1. Gather user input
   const categoryName = e.target.elements[0].value;
   const budgetAmount = e.target.elements[1].value;
+  const budgetDate = e.target.elements[2].value;
+
   
   // 2. Check if user is authenticated
   const user = auth.currentUser;
@@ -564,9 +507,10 @@ document.querySelector('.budget-form').addEventListener('submit', async (e) => {
   await set(ref(db, `users/${userId}/budgetCategories/${Date.now()}`), {
     category: categoryName,
     limit: budgetAmount,
-    spent: "0"
+    spent: "0",
+    date: budgetDate 
   });
-  alert("Budget category saved!");
+  alert("Бюджетът ви беше запазен!");
 
   
   // 4. Optionally, clear the form fields
@@ -574,8 +518,9 @@ document.querySelector('.budget-form').addEventListener('submit', async (e) => {
 
 
   // 5. Refresh the UI by calling your display/aggregator function
-    await displayData();
-
+  await updateBudgetChart(false);  // 🔄 refresh chart
+  await updateBudgetCards(false); 
+ // 🔄 refresh cards
 });
 
 
@@ -602,7 +547,7 @@ document.querySelector('.budget-form').addEventListener('submit', async (e) => {
       const categoriesRef = ref(db, `users/${userId}/budgetCategories`);
       const snapshot = await get(categoriesRef);
       if (!snapshot.exists()) {
-        container.innerHTML = "<p style='text-align:center;'>No such data as of yet</p>";
+        container.innerHTML = "<p style='text-align:center;'>Няма налични данни към момента</p>";
         return;
       }
       const categoriesData = snapshot.val();
@@ -621,7 +566,7 @@ document.querySelector('.budget-form').addEventListener('submit', async (e) => {
       });
       // If no valid data found, signal no data.
       if (labels.length === 0 || values.length === 0) {
-        container.innerHTML = "<p style='text-align:center;'>No such data as of yet</p>";
+        container.innerHTML = "<p style='text-align:center;'>Няма налични данни към момента</p>";
         return;
       }
       chartData = {
@@ -632,7 +577,7 @@ document.querySelector('.budget-form').addEventListener('submit', async (e) => {
       };
     } catch (error) {
       console.error("Error fetching chart data:", error);
-      container.innerHTML = "<p style='text-align:center;'>No such data as of yet</p>";
+      container.innerHTML = "<p style='text-align:center;'>Няма налични данни към момента</p>";
       return;
     }
   }
@@ -666,11 +611,16 @@ async function displayData() {
       // Authenticated => show real data
       await updateBudgetCards(false);
       await updateBudgetChart(false);
-
+      const privacyModeEnabled = JSON.parse(localStorage.getItem("privacyModeEnabled")) || false;
+if (privacyModeEnabled) {
+  enablePrivacyMode();
+}
       // Add more calls if needed (like transactions, etc.)
     } else {
       // Not authenticated => dummy data
       displayDummyData();
+      enablePrivacyMode();
+
     }
   }
 
@@ -681,6 +631,7 @@ async function displayData() {
 
     // 2) Budget Chart
     updateBudgetChart(true);
+    enablePrivacyMode();
 
     // You can also do transactions, bills, etc. with a forceDummy = true
   }
@@ -725,156 +676,7 @@ function updateProfilePicture() {
   }
 }
 
-window.SetProfilePicture = setProfilePicture;
-    document.addEventListener("DOMContentLoaded", () => {
-  /************************************************
-   * PROFILE PICTURE SETUP
-   ***********************************************/
    
-
-
- 
-
-  /************************************************
-   * NOTIFICATIONS LOGIC
-   ***********************************************/
-  function getNotifications() {
-    return JSON.parse(localStorage.getItem('notifications')) || [];
-  }
-  function saveNotifications(notifs) {
-    localStorage.setItem('notifications', JSON.stringify(notifs));
-  }
-  function addNotification({ text, icon, type }) {
-    const notifs = getNotifications();
-    notifs.push({
-      id: Date.now().toString(),
-      text,
-      icon,
-      type,
-      read: false
-    });
-    saveNotifications(notifs);
-  }
-  function markNotificationRead(notificationId) {
-    const notifs = getNotifications();
-    const index = notifs.findIndex(n => n.id === notificationId);
-    if (index !== -1) {
-      notifs[index].read = true;
-      saveNotifications(notifs);
-    }
-    openNotificationsMenu();
-  }
-
-  async function checkBudgetsAndGoals() {
-    try {
-      if (!auth.currentUser) {
-        console.warn("No authenticated user");
-        return;
-      }
-      const userId = auth.currentUser.uid;
-      const userRef = ref(db, `users/${userId}`);
-      const snapshot = await get(userRef);
-      if (!snapshot.exists()) {
-        console.log("No data found for user:", userId);
-        return;
-      }
-      const data = snapshot.val();
-      // Check Budget usage
-      if (data.budgets && data.budgets.daily) {
-        const { used, limit } = data.budgets.daily;
-        const usagePercent = (used / limit) * 100;
-        if (usagePercent >= 80 && usagePercent < 100) {
-          addNotification({
-            text: "Careful with spending, you're over 80% of your daily budget!",
-            icon: "💸",
-            type: "budget"
-          });
-        } else if (usagePercent >= 100) {
-          addNotification({
-            text: "You've exceeded your daily budget!",
-            icon: "⚠️",
-            type: "budget"
-          });
-        }
-      }
-      // Check Goals
-      if (data.goals) {
-        Object.keys(data.goals).forEach(goalId => {
-          const goal = data.goals[goalId];
-          if (!goal.completed && goal.savedSoFar >= goal.targetAmount) {
-            update(ref(db, `users/${userId}/goals/${goalId}`), { completed: true });
-            addNotification({
-              text: `Congratulations on achieving your goal: ${goal.name}!`,
-              icon: "🎉",
-              type: "goal"
-            });
-          }
-        });
-      }
-    } catch (error) {
-      console.error("Error checking budgets/goals:", error);
-    }
-  }
-
-  async function handleBellClick() {
-    const welcomeEnabled = (localStorage.getItem('welcomeNotificationsEnabled') === 'true');
-    if (!welcomeEnabled) {
-      alert("Enable welcome notifications from the settings tab!");
-    } else {
-      await checkBudgetsAndGoals();
-      console.log("Bell icon clicked!");
-      openNotificationsMenu();
-    }
-  }
-
-  function openNotificationsMenu() {
-    const notifications = getNotifications();
-    let menuHtml = "";
-    if (notifications.length === 0) {
-      menuHtml = `<div style="padding:10px; text-align:center; color:#888;">No new notifications.</div>`;
-    } else {
-      menuHtml = "<ul style='list-style:none; padding:10px; margin:0;'>";
-      notifications.forEach(notif => {
-        const style = notif.read ? "notif-read" : "notif-unread";
-        menuHtml += `<li class="${style}" style="padding:10px; border-bottom:1px solid #eee; cursor:pointer;"
-            onclick="markNotificationRead('${notif.id}')">
-            ${notif.icon ? notif.icon + " " : ""}${notif.text}
-          </li>`;
-      });
-      menuHtml += "</ul>";
-    }
-    let notifMenu = document.getElementById("notificationsMenu");
-    if (!notifMenu) {
-      notifMenu = document.createElement('div');
-      notifMenu.id = "notificationsMenu";
-      notifMenu.style.position = "absolute";
-      notifMenu.style.top = "60px";
-      notifMenu.style.right = "130px";
-      notifMenu.style.backgroundColor = "#fff";
-      notifMenu.style.border = "1px solid #ccc";
-      notifMenu.style.borderRadius = "6px";
-      notifMenu.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
-      notifMenu.style.padding = "10px";
-      notifMenu.style.zIndex = 10000;
-      document.body.appendChild(notifMenu);
-    }
-    notifMenu.innerHTML = menuHtml;
-    notifMenu.style.display = 'block';
-
-    document.addEventListener('click', function handler(e) {
-      if (!notifMenu.contains(e.target) && e.target.id !== 'bell-icon' && !e.target.closest('#bell-icon')) {
-        notifMenu.style.display = 'none';
-        document.removeEventListener('click', handler);
-      }
-    });
-  }
-
-  // Expose needed functions to the window if your HTML calls them inline:
-  window.handleBellClick = handleBellClick;
-  window.handleMessageClick = handleMessageClick;
-  window.markNotificationRead = markNotificationRead;
-  window.checkBudgetsAndGoals = checkBudgetsAndGoals;
-});
   </script>
     <script src="/features/privacyMode.js"></script>
 

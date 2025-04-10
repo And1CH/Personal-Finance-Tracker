@@ -211,17 +211,17 @@
 <body>
   <div class="sidebar">
     <div class="logo">
-      <i class="fas fa-bars"></i> <span>Finance Tracker</span>
+      <i class="fas fa-bars"></i> <span>TETFinance</span>
     </div>
     <ul class="menu">
-      <li><a href="/minipages/Overview.html"><i class="fas fa-home"></i><span>Overview</span></a></li>
-      <li><a href="/minipages/transactions.html"><i class="fas fa-exchange-alt"></i><span>Transactions</span></a></li>
-      <li><a href="/minipages/charts.html"><i class="fas fa-chart-pie"></i><span>Charts</span></a></li>
-      <li><a href="/minipages/budget.html"><i class="fas fa-wallet"></i><span>Budget</span></a></li>
-      <li><a href="/minipages/goals.html"><i class="fas fa-bullseye"></i><span>Goals</span></a></li>
+      <li><a href="/minipages/Overview.html"><i class="fas fa-home"></i><span>Общ преглед</span></a></li>
+      <li><a href="/minipages/transactions.html"><i class="fas fa-exchange-alt"></i><span>Транзакции</span></a></li>
+      <li><a href="/minipages/charts.html"><i class="fas fa-chart-pie"></i><span>Визуализация</span></a></li>
+      <li><a href="/minipages/budget.html"><i class="fas fa-wallet"></i><span>Бюджети</span></a></li>
+      <li><a href="/minipages/goals.html"><i class="fas fa-bullseye"></i><span>Цели</span></a></li>
       <!-- Active page -->
-      <li><a class="active" href="/minipages/AskFinance.html"><i class="fas fa-question-circle"></i><span>AskFinance</span></a></li>
-      <li><a href="/minipages/settings.html"><i class="fas fa-cog"></i><span>Settings</span></a></li>
+      <li><a class="active" href="/minipages/AskFinance.html"><i class="fas fa-question-circle"></i><span>Финансов бот</span></a></li>
+      <li><a href="/minipages/settings.html"><i class="fas fa-cog"></i><span>Настройки</span></a></li>
     </ul>
   </div>
 
@@ -249,66 +249,7 @@
 </div>
 
   <!-- The Modal Overlay for sending messages -->
-  <div id="messageModal">
-    <div class="message-container" id="messageContainer">
-      <h2>Send Message</h2>
-      <form id="messageForm">
-        <!-- Basic Fields -->
-        <div class="form-group">
-          <label for="toField">To:</label>
-          <input type="text" id="toField" placeholder="Enter recipient name">
-        </div>
-        <div class="form-group">
-          <label for="titleField">Title:</label>
-          <input type="text" id="titleField" placeholder="Message title">
-        </div>
-        <div class="form-group">
-          <label for="contentField">Content:</label>
-          <textarea id="contentField" placeholder="Type your message here" rows="4"></textarea>
-        </div>
-
-        <!-- Data Sharing Mini Menu -->
-        <div class="data-sharing-container" id="dataSharingContainer">
-          <div class="data-sharing-title">
-            Data Sharing
-            <i class="fas fa-lock" id="lockIcon"></i>
-          </div>
-          <div class="data-sharing-expanded" id="dataSharingExpanded">
-            <div class="data-sharing-expanded-content">
-              <div class="form-group">
-                <label style="font-weight: bold;">Type of Data</label>
-                <div class="data-types">
-                  <label><input type="checkbox" name="dataType" value="transactions"> Transactions</label>
-                  <label><input type="checkbox" name="dataType" value="budgets"> Budgets</label>
-                  <label><input type="checkbox" name="dataType" value="goals"> Goals</label>
-                  <label><input type="checkbox" name="dataType" value="charts"> Charts</label>
-                </div>
-              </div>
-              <div class="form-group">
-                <label style="font-weight: bold;">Date Range</label>
-                <div style="display: flex; gap: 10px;">
-                  <div>
-                    <label for="dataFrom">From:</label>
-                    <input type="date" id="dataFrom">
-                  </div>
-                  <div>
-                    <label for="dataTo">To:</label>
-                    <input type="date" id="dataTo">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- End of Data Sharing Mini Menu -->
-
-        <div class="modal-buttons">
-          <button type="submit">Send</button>
-          <button type="button" onclick="closeMessageModal()">Cancel</button>
-        </div>
-      </form>
-    </div>
-  </div>
+  
 
 
 
@@ -337,6 +278,11 @@
     const database = getDatabase(app);
 
     console.log("AskFinance page now has Firebase DB access!");
+
+    const privacyModeEnabled = JSON.parse(localStorage.getItem("privacyModeEnabled")) || false;
+if (privacyModeEnabled) {
+  enablePrivacyMode();
+}
   </script>
 </body>
 </html>
