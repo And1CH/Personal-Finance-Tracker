@@ -1269,12 +1269,6 @@ function expandSecurityCard() {
   document.getElementById('securitySaveButton')
   .addEventListener('click', saveSecuritySettings);
 
-export async function setTwoFactorEnabled(userId, isEnabled) {
-  await update(ref(db, 'users/' + userId + '/security'), {
-    twoFactorEnabled: isEnabled
-  });
-  console.log(`2FA is now ${isEnabled ? 'enabled' : 'disabled'} for user ${userId}`);
-}
 
 
 
@@ -1289,7 +1283,6 @@ export async function setTwoFactorEnabled(userId, isEnabled) {
   try {
     // 1) Gather input values from the security card
     const newPassword = document.getElementById('newPassword').value.trim();
-    const recoveryEmail = document.getElementById('recoveryEmail').value.trim();
     console.log('things updated');
     // 2) (Optional) Validate inputs as needed before proceeding
 
@@ -1297,19 +1290,16 @@ export async function setTwoFactorEnabled(userId, isEnabled) {
     // (Assumes you have already initialized Firebase and have auth and database available)
     const userId = auth.currentUser.uid; // from firebase/auth
     // Here we update the security-related node for the user
-    await update(ref(db, 'users/' + userId + '/security'), {
+    await update(ref(db, 'users/' + userId + '/password'), {
       newPassword: newPassword,      // NOTE: For a real app, consider using Firebase Auth methods to update passwords.
-      recoveryEmail: recoveryEmail,
-      twoFactorEnabled: twoFactorEnabled
       // Add other security settings here as needed
     });
 
-    alert('Security settings updated successfully!');
+    alert('Настройките за сигурност бяха успешно обновени!');
     collapseSecurityCard(); // Collapse the security card (UI feedback)
 
   } catch (err) {
-    console.error('Error saving security settings:', err);
-    alert('Error saving security settings: ' + err.message);
+    alert('Грешка при обновяване на настройките за сигурност:', err );
   }
 }
 window.saveSecuritySettings = function saveSecuritySettings() {

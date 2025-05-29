@@ -152,16 +152,41 @@
     
    /* Make the container position its child elements absolutely */
 
-#password-toggle-icon {
+/* Make .password-wrapper the positioning context */
+.password-wrapper {
+  position: relative;
+}
 
+/* Give your input some extra right padding so text doesn’t overlap the icon */
+.password-wrapper input {
+  width: 100%;
+  padding: 12px;
+  padding-right: 40px;    /* ← space for the icon */
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  background: #fff;
+  color: #333;
+}
+
+/* Absolutely position the icon inside the wrapper */
+.password-wrapper .toggle-password {
   position: absolute;
-  top: 79%;
-  right: 562px;         /* adjust as needed */
+  top: 50%;
+  right: 12px;             /* ← distance from the right edge of the input */
   transform: translateY(-50%);
   cursor: pointer;
-  font-size: 1.2rem;      /* icon size */
+  font-size: 1.2rem;
   color: #666;
+  user-select: none;
 }
+
+/* On focus, you can also highlight the icon if you like */
+.password-wrapper input:focus + .toggle-password {
+  color: #8c7b6b;
+}
+
 
 
         /* ANIMATIONS */
@@ -212,47 +237,62 @@
 
 <!-- LOGIN FORM -->
 <div class="form-container" id="form-container">
-  <h2>Login</h2>
+  <h2>Вход</h2>
   <form onsubmit="handleLogin(event)">
     <div class="form-group">
-      <label for="loginEmail">Email</label>
-      <input type="email" id="loginEmail" placeholder="Your Email" required>
+      <label for="loginEmail">Поща</label>
+      <input type="email" id="loginEmail" placeholder="Вашата поща" required>
     </div>
     <div class="form-group">
-      <label for="loginPassword">Password</label>
-      <input type="password" id="loginPassword" placeholder="Your Password" required>
-      <i
-      id="password-toggle-icon"
+  <label for="loginPassword">Парола</label>
+  <div class="password-wrapper">
+    <input
+      type="password"
+      id="loginPassword"
+      placeholder="Вашата парола"
+      required
+    />
+    <i
       class="fa-solid fa-eye-slash toggle-password"
       onclick="togglePasswordVisibility('loginPassword', this)"
     ></i>
-    </div>
-    <button type="submit">Login</button>
+  </div>
+</div>
+
+    <button type="submit">Влизане</button>
   </form>
 </div>
 
 <!-- REGISTER FORM -->
 <div class="form-container" id="register-form">
-  <h2>Register</h2>
+  <h2>Регистрация </h2>
   <form onsubmit="handleRegister(event)">
     <div class="form-group">
-      <label for="reg-username">Username</label>
-      <input type="text" id="reg-username" placeholder="Your Username" required>
+      <label for="reg-username">Потребителско име</label>
+      <input type="text" id="reg-username" placeholder="Вашето потребителско име" required>
     </div>
     <div class="form-group">
-      <label for="reg-email">Email</label>
-      <input type="email" id="reg-email" placeholder="Your Email" required>
+      <label for="reg-email">Поща</label>
+      <input type="email" id="reg-email" placeholder="Вашата поща" required>
     </div>
-    <div class="form-group">
-      <label for="reg-password">Password</label>
-      <input type="password" id="reg-password" placeholder="Your Password" required>
-      <i
-      id="password-toggle-icon"
+   <div class="form-group">
+  <label for="reg-password">Парола</label>
+  <div class="password-wrapper">
+    <input
+      type="password"
+      id="reg-password"
+      placeholder="Вашата парола"
+      required
+    />
+    <i
       class="fa-solid fa-eye-slash toggle-password"
       onclick="togglePasswordVisibility('reg-password', this)"
     ></i>
-    </div>
-    <button type="submit">Register</button>
+  </div>
+</div>
+
+    
+    <button type="submit">Регистрация</button>
   </form>
 </div>
 
@@ -282,6 +322,7 @@
   // ✅ Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  
 
 
   // ✅ Show Login Form
@@ -322,10 +363,10 @@ localStorage.setItem('userEmail', email);  // Use email from form
 localStorage.setItem('username', name || ""); // Use name if available
 
 
-    alert("Registration successful! Redirecting to the dashboard...");
+    alert("Успешна регистрация! Пренасочване към таблото...");
     window.location.href = "/minipages/Overview.html";  // Direct redirection after successful registration
   } catch (error) {
-    alert(`Registration Error: ${error.message}`);
+    alert(`Грешка при регистрацията: ${error.message}`);
   }
 };
 
@@ -365,10 +406,10 @@ localStorage.setItem('username', name || ""); // Use name if available
       console.log("Error: Email was not saved in the database.");
     }
     
-    alert("Login successful! Redirecting to the dashboard...");
+    alert("Успешно влизане! Пренасочване към таблото...");
     window.location.href = "/minipages/Overview.html";
   } catch (error) {
-    alert("Login Error: " + error.message);
+    alert("Грешка при влизането: " + error.message);
   }
 };
 

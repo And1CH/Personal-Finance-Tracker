@@ -4,7 +4,7 @@ const cors = require('cors');
 const app = express();
 
 const PORT = 3000; // Use any free port if needed
-const secret = 'YOUR_SECRET_KEY'; // Replace with your Chatbase secret key
+const secret = 'toy9i8suz8u7gd4z7u1g04utt758p1c2'; // Replace with your Chatbase secret key
 
 app.use(cors());
 app.use(express.json());
