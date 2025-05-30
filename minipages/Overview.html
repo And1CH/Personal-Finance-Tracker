@@ -669,36 +669,38 @@ async function updateSummaryCards(forceDummy = false) {
 
   // Определяме диапазона:
   // 1. Изчисляваме първия ден на текущия месец.
-  const now = new Date();
-  const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth(); // 0-базирано (0 = януари)
-  const firstOfMonth = new Date(currentYear, currentMonth, 1);
-  
-  // 2. Изчисляваме разликата в дни между първия ден и сега.
-  const msPerDay = 24 * 60 * 60 * 1000;
-  const diffDays = Math.floor((now - firstOfMonth) / msPerDay) + 1; // +1 за включване на деня
-  
-  // 3. Ако разликата е над 30 дни, използваме последните 30 дни; иначе - от първия ден на месеца.
-  let startDate;
-  if (diffDays > 30) {
-    // Понеже искаме 30 дни, включително днешния, пресмятаме:
-    startDate = new Date(now.getTime() - (30 - 1) * msPerDay);
-  } else {
-    startDate = firstOfMonth;
-  }
-  
-  // Крайна дата винаги ще бъде сега.
-  const endDate = now;
-  
-  // Преобразуваме датите във формат YYYY-MM-DD
-  const startStr = startDate.toISOString().split("T")[0];
-  const endStr = endDate.toISOString().split("T")[0];
-  
-  // Функция за проверка дали дадена дата (във формат YYYY-MM-DD) попада в диапазона.
-  function isInRange(dateStr) {
-    return dateStr && dateStr >= startStr && dateStr <= endStr;
-  }
-  
+  // 1. Define the start date (use 'now' or replace with your user-provided date)
+const startDate = new Date();  
+// If you have a string from the user, you could do:
+// const startDate = new Date(userInputDateString);
+
+// 2. Extract its components
+const startYear  = startDate.getFullYear();
+const startMonth = startDate.getMonth();    // 0–11
+const startDay   = startDate.getDate();     // 1–31
+
+// 3. Compute the end date one month ahead, same day
+//    new Date(year, month+1, day) will auto-adjust if the next month is shorter.
+//    e.g. Jan 31 → Feb 28 (or 29 in a leap year)
+const endDate = new Date(startYear, startMonth + 1, startDay);
+
+// 4. Format both as "YYYY-MM-DD"
+const startStr = startDate.toISOString().split("T")[0];
+const endStr   = endDate  .toISOString().split("T")[0];
+
+// 5. Helper to check if a recordDate lies in [startDate, endDate]
+function isInRange(dateStr) {
+  return (
+    dateStr && 
+    dateStr >= startStr && 
+    dateStr <= endStr
+  );
+}
+
+// --- Example console output ---
+console.log(`Pulling data from ${startStr} through ${endStr}`);
+// e.g. "Pulling data from 2025-05-29 through 2025-06-29"
+
   let totalIncome = 0;
   let totalExpenses = 0;
   
@@ -1145,7 +1147,7 @@ async function updateIncomeExpenseChart(forceDummy = false) {
     
     function showNextBudget() {
       const currentBudget = budgetsArray[currentIndex];
-      // For example: "kjadfb: $5"
+      // For example: "kebab: $5"
       budgetMessageEl.textContent = `${currentBudget.category}: $${currentBudget.limit.toLocaleString()}`;
       
       // Fade in
